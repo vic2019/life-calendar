@@ -1,7 +1,8 @@
-import React from "react";
+import React from 'react';
 
-export default function Calender({ epochs, setEpochs }) {
+export default function Calender(props) {
+  const { epochs, setEpochs } = props;
   return (
-    <h1>{epochs[0].title}</h1>
+    <h1>Calender</h1>
   );
 }
