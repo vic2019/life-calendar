@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BasicInfo from "./BasicInfo";
 import Calender from "./Calender";
-import dayjs from 'dayjs';
+
 
 const defaultEpochs =[{
     title: 'childhood',
@@ -29,7 +29,7 @@ const defaultUserInfo = {
   bday: '1990-06-15',
   lifeSpan: 80,
   duration: 80 * 52,
-  dayObj: dayjs('1990-06-15').startOf('week')
+  dayObj: null
 };
 
 export default function App() {
@@ -38,8 +38,6 @@ export default function App() {
 
   return (    
     <div>
-      <h1>{userInfo.dayObj.format('MM-DD-YYYY')} to {userInfo.dayObj.add(userInfo.duration, 'week').format('MM-DD-YYYY')}
-      </h1>
       <BasicInfo userInfo={userInfo} setUserInfo={setUserInfo} />
       <Calender userInfo={userInfo} epochs={epochs} setEpochs={setEpochs} />
     </div>
