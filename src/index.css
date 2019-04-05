@@ -12,3 +12,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.BasicInfo > Form {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+}
+
+.BasicInfo .row-wrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+}
+
+.BasicInfo Input, DatePicker {
+  width: 15em;
+}

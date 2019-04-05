@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import BasicInfo from "./BasicInfo";
 import Calender from "./Calender";
-
+import moment from 'moment';
 
 const defaultEpochs =[{
     title: 'childhood',
@@ -26,10 +26,11 @@ const defaultEpochs =[{
   }];
 
 const defaultUserInfo = {
-  bday: '1990-06-15',
-  lifeSpan: 80,
+  name: 'Victor',
+  gender: 'male',
+  birthday: moment('1990-01-01'),
+  lifespan: 80,
   duration: 80 * 52,
-  dayObj: null
 };
 
 export default function App() {
