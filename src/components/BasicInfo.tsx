@@ -21,9 +21,9 @@ class BasicInfo extends React.Component {
           this.props.form.getFieldsValue([
             'name', 'gender', 'birthday', 'lifespan'
           ]);
-          
+        
         this.setUserInfo({
-          name: name,
+          name: name.trim(),
           gender: gender,
           birthday: birthday,
           lifespan: parseInt(lifespan),
@@ -83,7 +83,7 @@ class BasicInfo extends React.Component {
             <Form.Item>
               {getFieldDecorator('lifespan', {
                 rules: [{
-                  transform: value => parseInt(value), required: true, type: 'number', message: 'Try 78 for the average American'
+                  transform: value => parseInt(value), required: true, type: 'number', message: 'Ex. 78 for the average American'
                 }],
               })(
                 <Input
