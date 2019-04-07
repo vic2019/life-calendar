@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Input, Select, DatePicker, Button } from 'antd';
+import moment from 'moment';
 
 
 const { Option } = Select;
@@ -8,11 +9,22 @@ class BasicInfo extends React.Component {
   constructor(props) {
     super(props);
     this.setUserInfo = props.setUserInfo;
-    this.setUserInfo.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.focusNext = this.focusNext.bind(this);
+    this.fields = Array(3).fill().map( (_, i) => React.createRef() );
   }
 
-  handleSubmit = (e) => {
-    e.preventDefault();
+  focusNext(index) {
+    return () => {
+      if (index === 3) {
+        this.fields[2].current.blur();
+        return;
+      }
+      setTimeout( () => {this.fields[index].current.focus()}, 0);
+    }
+  }
+
+  handleSubmit() {
     this.props.form.validateFields((err, values) => {
       if (err) {
         return;
@@ -27,6 +39,7 @@ class BasicInfo extends React.Component {
           gender: gender,
           birthday: birthday,
           lifespan: parseInt(lifespan),
+          startOfWeek: moment(birthday).startOf('week'),
           duration: parseInt(lifespan) * 52
         });
       }
@@ -46,7 +59,10 @@ class BasicInfo extends React.Component {
                   required: true, min: 1, whitespace: true, message: 'Please enter your name'
                 }],
               })(
-                <Input placeholder='Name' />
+                <Input 
+                  placeholder='Name' 
+                  onPressEnter={this.focusNext(0)} 
+                />
               )}
             </Form.Item>
             <Form.Item>
@@ -59,6 +75,8 @@ class BasicInfo extends React.Component {
                   placeholder='Gender' 
                   //placehold would disappear if assign 'value'
                   style={{ width: '15em' }}
+                  onChange={this.focusNext(1)}
+                  ref={this.fields[0]}   
                 >
                   <Option value='male'>Male</Option>
                   <Option value='female'>Female</Option>
@@ -77,6 +95,8 @@ class BasicInfo extends React.Component {
                 <DatePicker
                   placeholder='Birthday (mm/dd/year)'
                   format={'MM/DD/YYYY'}
+                  onChange={this.focusNext(2)}
+                  ref={this.fields[1]}
                 />
               )}
             </Form.Item>
@@ -88,6 +108,8 @@ class BasicInfo extends React.Component {
               })(
                 <Input
                   placeholder='Expected Lifespan (years)'
+                  onPressEnter={this.focusNext(3)}
+                  ref={this.fields[2]}
                 />
               )}
             </Form.Item>

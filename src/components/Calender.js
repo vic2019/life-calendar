@@ -9,6 +9,7 @@ export default function Calender({ userInfo, epochs, setEpochs }) {
     gender: ${userInfo.gender} <Br>  
     birthday: ${userInfo.birthday} <Br> 
     lifespan: ${userInfo.lifespan} <Br>
+    startOfWeek: ${userInfo.startOfWeek} <Br>
     duration: ${userInfo.duration}
     `
   });

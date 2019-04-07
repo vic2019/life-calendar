@@ -30,6 +30,7 @@ const defaultUserInfo = {
   gender: 'male',
   birthday: moment('1990-01-01'),
   lifespan: 80,
+  startOfWeek: null,
   duration: 80 * 52,
 };
 
