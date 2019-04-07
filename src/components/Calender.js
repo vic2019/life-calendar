@@ -9,15 +9,6 @@ export default function Calender({ userInfo, epochs, setEpochs }) {
 
 
   useEffect(() => {
-    // document.getElementById('test2').innerHTML = `
-    // name: ${userInfo.name} <Br> 
-    // gender: ${userInfo.gender} <Br>  
-    // birthday: ${userInfo.birthday} <Br> 
-    // lifespan: ${userInfo.lifespan} <Br>
-    // startOfWeek: ${userInfo.startOfWeek} <Br>
-    // duration: ${userInfo.duration} <Br>
-    // `;
-
     setWeeks(
       Array(userInfo.duration).fill().map( () => { return {content: '⬛'};} )
     );
@@ -26,7 +17,9 @@ export default function Calender({ userInfo, epochs, setEpochs }) {
 
   return (
     <div className='Calender' style={calenderStyle}>
-      {(weeks.length === 1)? null: weeks.map((item, i) => <span key={i}>{item.content}</span>)}
+      {(weeks.length === 1)? null: weeks.map(
+        (item, i) => <span key={i}>{item.content}</span>
+      )}
     </div>
   );
 }

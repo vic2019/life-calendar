@@ -27,16 +27,16 @@ const defaultEpochs =[{
   }];
 
 const defaultUserInfo = {
-  name: 'Victor',
+  name: 'Jason',
   gender: 'male',
-  birthday: moment('1990-01-01'),
-  lifespan: 80,
-  startOfWeek: null,
-  duration: 80 * 52,
+  birthday: moment('1989-02-01'),
+  lifespan: 35,
+  startOfWeek: moment(moment('1989-02-01')).startOf('week'),
+  duration: 35 * 52,
 };
 
 export default function App() {
-  const [userInfo, setUserInfo] = useState({});
+  const [userInfo, setUserInfo] = useState(defaultUserInfo);
   const [epochs, setEpochs] = useState(defaultEpochs);
 
   return (    

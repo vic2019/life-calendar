@@ -114,10 +114,13 @@ class BasicInfo extends React.Component {
             <Form.Item>
               {getFieldDecorator('lifespan', {
                 rules: [{
-                  transform: value => {
-                    let num = parseInt(value)
-                    return (num >= 0)? num: 0;
-                  }, required: true, type: 'number', message: 'Ex. 78 for the average American'
+                  transform: (value) => {
+                    let input = Math.floor(value);
+                    return isNaN(input) || (input < 0) ? NaN: input;
+                  }, 
+                  required: true, 
+                  type: 'number', 
+                  message: 'Ex. 78 for the average American'
                 }],
               })(
                 <Input
