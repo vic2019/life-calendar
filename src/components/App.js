@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import BasicInfo from "./BasicInfo";
 import Calender from "./Calender";
 import moment from 'moment';
+import { Divider } from 'antd';
 
 const defaultEpochs =[{
     title: 'childhood',
@@ -35,12 +36,13 @@ const defaultUserInfo = {
 };
 
 export default function App() {
-  const [userInfo, setUserInfo] = useState(defaultUserInfo);
+  const [userInfo, setUserInfo] = useState({});
   const [epochs, setEpochs] = useState(defaultEpochs);
 
   return (    
-    <div>
+    <div className='App'>
       <BasicInfo userInfo={userInfo} setUserInfo={setUserInfo} />
+      <Divider/>
       <Calender userInfo={userInfo} epochs={epochs} setEpochs={setEpochs} />
     </div>
   );

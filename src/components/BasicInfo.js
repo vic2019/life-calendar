@@ -15,12 +15,22 @@ class BasicInfo extends React.Component {
   }
 
   focusNext(index) {
-    return () => {
-      if (index === 3) {
-        this.fields[2].current.blur();
-        return;
+    return (e) => {
+      switch (index) {
+        case 0:
+        case 1:
+          this.fields[index].current.focus();
+          break;
+        case 2:
+          if (e === true) break;
+          setTimeout( () => this.fields[index].current.focus(), 0);
+          break;
+        case 3:
+          this.fields[2].current.blur();
+          break;
+        default:
+          break;
       }
-      setTimeout( () => {this.fields[index].current.focus()}, 0);
     }
   }
 
@@ -50,9 +60,8 @@ class BasicInfo extends React.Component {
     const { getFieldDecorator } = this.props.form;
 
     return (
-      <div className='BasicInfo'>
-        <Form className='Form' layout='inline'>
-          <div className='row-wrapper'>
+        <Form className='BasicInfo' layout='inline' style={basicInfoStyle}>
+          <div className='row-wrapper' style={rowWrapperStyle}>
             <Form.Item>
               {getFieldDecorator('name', {
                 rules: [{
@@ -62,6 +71,7 @@ class BasicInfo extends React.Component {
                 <Input 
                   placeholder='Name' 
                   onPressEnter={this.focusNext(0)} 
+                  style={inputStyle}
                 />
               )}
             </Form.Item>
@@ -74,9 +84,9 @@ class BasicInfo extends React.Component {
                 <Select
                   placeholder='Gender' 
                   //placehold would disappear if assign 'value'
-                  style={{ width: '15em' }}
+                  style={inputStyle}
                   onChange={this.focusNext(1)}
-                  ref={this.fields[0]}   
+                  ref={this.fields[0]} 
                 >
                   <Option value='male'>Male</Option>
                   <Option value='female'>Female</Option>
@@ -85,7 +95,7 @@ class BasicInfo extends React.Component {
               )}
             </Form.Item>
           </div>
-          <div className='row-wrapper'>
+          <div className='row-wrapper' style={rowWrapperStyle}>
             <Form.Item>
               {getFieldDecorator('birthday', {
                 rules: [{
@@ -94,8 +104,9 @@ class BasicInfo extends React.Component {
               })(
                 <DatePicker
                   placeholder='Birthday (mm/dd/year)'
+                  style={inputStyle}
                   format={'MM/DD/YYYY'}
-                  onChange={this.focusNext(2)}
+                  onOpenChange={this.focusNext(2)}
                   ref={this.fields[1]}
                 />
               )}
@@ -103,26 +114,48 @@ class BasicInfo extends React.Component {
             <Form.Item>
               {getFieldDecorator('lifespan', {
                 rules: [{
-                  transform: value => parseInt(value), required: true, type: 'number', message: 'Ex. 78 for the average American'
+                  transform: value => {
+                    let num = parseInt(value)
+                    return (num >= 0)? num: 0;
+                  }, required: true, type: 'number', message: 'Ex. 78 for the average American'
                 }],
               })(
                 <Input
                   placeholder='Expected Lifespan (years)'
+                  style={inputStyle}
                   onPressEnter={this.focusNext(3)}
                   ref={this.fields[2]}
                 />
               )}
             </Form.Item>
           </div>
-          <div className='row-wrapper'>
+          <div className='row-wrapper' style={rowWrapperStyle}>
             <Form.Item>
               <Button onClick={this.handleSubmit}>Create My Calender!</Button>
             </Form.Item>
           </div>
         </Form>
-      </div>
     );
   }
 }
 
 export default Form.create()(BasicInfo);
+
+const basicInfoStyle = {
+  display: 'flex',
+  flexFlow: 'column wrap',
+  alignItem: 'center',
+  paddingTop: '20px',
+  marginLeft: '16px' //To offset the margin-right of .ant-form-item
+}
+
+const rowWrapperStyle = {
+  display: 'flex',
+  flexFlow: 'row wrap',
+  justifyContent: 'center',
+}
+
+const inputStyle = {
+  width:'16em'
+}
+
