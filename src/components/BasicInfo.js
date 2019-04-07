@@ -39,11 +39,13 @@ class BasicInfo extends React.Component {
       if (err) {
         return;
       } else {
-        const { name, gender, birthday, lifespan } =     
+        let { name, gender, birthday, lifespan } =     
           this.props.form.getFieldsValue([
             'name', 'gender', 'birthday', 'lifespan'
           ]);
         
+        lifespan = lifespan > 150 ? 150: lifespan;
+
         this.setUserInfo({
           name: name.trim(),
           gender: gender,
@@ -115,13 +117,12 @@ class BasicInfo extends React.Component {
               {getFieldDecorator('lifespan', {
                 rules: [{
                   transform: (value) => {
-                    let input = Math.floor(value);
-                    return isNaN(input) || (input < 0) ? NaN: input;
-                  }, 
-                  required: true, 
+                    value = Math.floor(value);
+                    return value > 0 ? value: NaN;
+                  },
                   type: 'number', 
                   message: 'Ex. 78 for the average American'
-                }],
+                }]
               })(
                 <Input
                   placeholder='Expected Lifespan (years)'
