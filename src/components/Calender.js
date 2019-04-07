@@ -3,7 +3,7 @@ import { Modal, Form, Input, Button} from 'antd';
 
 export default function Calender({ userInfo, epochs, setEpochs }) {
   const [weeks, setWeeks] = useState(Array(userInfo.duration).fill().map(() => {
-      return { content: '🔲'}
+      return { content: '⬛'}
     }));
 
 
@@ -19,7 +19,7 @@ export default function Calender({ userInfo, epochs, setEpochs }) {
     // `;
 
     setWeeks(
-      Array(userInfo.duration).fill().map( () => { return {content: '🔲'};} )
+      Array(userInfo.duration).fill().map( () => { return {content: '⬛'};} )
     );
 
   });
@@ -35,6 +35,6 @@ const calenderStyle = {
   display: 'flex',
   flexFlow: 'row wrap',
   justifyContent: 'flex-start',
-  fontSize: '0.8em',
+  fontSize: '1em',
 }
 
