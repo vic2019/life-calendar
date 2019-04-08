@@ -32,7 +32,7 @@ const defaultUserInfo = {
   birthday: moment('1989-02-01'),
   lifespan: 35,
   startOfWeek: moment(moment('1989-02-01')).startOf('week'),
-  duration: null,
+  duration: 35 * 52,
 };
 
 export default function App() {

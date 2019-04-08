@@ -23,14 +23,15 @@ code {
   min-height: 100vh;
 }
 
-.header {
+.container > .header {
+  background-color:  #34495e;
   position: fixed;
   height: 10vh;
   width: 100vw;
   z-index: 1;
 }
 
-.row {
+.container > .row {
   position: relative;
   top: 10vh;
   display: flex;
@@ -44,20 +45,35 @@ code {
 
 .App {
   justify-content: center;
-  background-color: #d6dbdf;
+  background-color: #f2f4f4;
   width: 660px;
 }
 
-.ant-form-item {
-  display: none;
+/* Don't change the padding! */
+.Calender {
+ padding: 6px 30px 60px 31px;
 }
 
-.Calender {
-  padding: 5px 28px 45px 35px;
+@media only screen and (max-width: 1024px) {
+  .Calender {
+    padding: 2px 12px 60px 22px;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .Calender {
+    padding: 2px 12px 50px 21px;
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .Calender {
+    padding: 2px 4px 45px 16px;
+  }
 }
 
 @media only screen and (max-width: 376px) {
   .Calender {
-    padding: 0px 3px 35px 16px;
+    padding: 2px 8px 40px 10px;
   }
 }
