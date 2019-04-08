@@ -1,24 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Form, Input, Button} from 'antd';
 import Week from './Week';
 
+
 export default function Calender({ userInfo, epochs, setEpochs }) {
-  const [weeks, setWeeks] = useState(Array(userInfo.duration).fill().map(() => {
-      return { content: '\u25a0', color: 'red' }
-    }));
+  const [weeks, setWeeks] = useState(Array(userInfo.duration).fill()
+    .map(() => { return { content: '\u25a0' }; }));
 
   useEffect(() => {
-    setWeeks(
-      Array(userInfo.duration).fill().map( () => { 
-        return {content: '\u25a0', color: 'red'};
-      })
+    // alert('use effect duration');
+    setWeeks(Array(userInfo.duration).fill()
+      .map( () => { return { content: '\u25a0' }; } )
     );
-  });
+  }, [userInfo.duration]);
+
+  useEffect(() => {
+    // alert('use effect weeks');
+    setWeeks(oldWeeks => {
+      return oldWeeks.map((item, index) => {
+        for (let epoch of epochs) {
+          if (index >= epoch.start && index <= epoch.end) {
+            item.color = epoch.color;
+            return item;
+          }
+        }
+        return item;
+      })
+    });
+  }, [epochs]);
 
   return (
     <div className='Calender' style={calenderStyle}>
       {(weeks.length === 1)? null: weeks.map(
-        (item, i) => <Week key={i} item={item}/>
+        (item, index) => <Week key={index} item={item}/>
       )}
     </div>
   );

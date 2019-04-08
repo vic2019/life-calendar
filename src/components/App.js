@@ -1,38 +1,33 @@
 import React, { useState } from "react";
 import BasicInfo from "./BasicInfo";
 import Calender from "./Calender";
-import moment from 'moment';
 import { Divider } from 'antd';
+import EpochInfo from './EpochInfo';
 
 const defaultEpochs =[{
     title: 'childhood',
     description: 'My lovely childhood',
     start: 0,
-    end: 780,
-    color: '#FFD700'
+    end: 2*52 - 1,
+    color: 'yellow'
   },
   {
     title: 'college',
     description: 'A dark time',
-    start: 936,
-    end: 1144, 
-    color: '#87CEFA'
+    start: 2*52,
+    end: 3*52, 
+    color: 'blue'
   },
   {
     title: 'law school',
     description: 'Thus began the disillusionment',
-    start: 1300,
-    end: 1456,
-    color: '#DC143C'
+    start: 4*52,
+    end: 5*52,
+    color: 'purple'
   }];
 
 const defaultUserInfo = {
-  name: 'Jason',
-  gender: 'male',
-  birthday: moment('1989-02-01'),
-  lifespan: 35,
-  startOfWeek: moment(moment('1989-02-01')).startOf('week'),
-  duration: 35 * 52,
+  duration: 10*52,
 };
 
 export default function App() {
@@ -43,6 +38,7 @@ export default function App() {
     <div className='App'>
       <BasicInfo userInfo={userInfo} setUserInfo={setUserInfo} />
       <Divider/>
+      <EpochInfo setEpochs={setEpochs}/>
       <Calender userInfo={userInfo} epochs={epochs} setEpochs={setEpochs} />
     </div>
   );

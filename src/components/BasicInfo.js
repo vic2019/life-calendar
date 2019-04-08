@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Select, DatePicker, Button } from 'antd';
+import { Form, Input, Select, DatePicker, Button, Tooltip } from 'antd';
 import moment from 'moment';
 
 
@@ -11,7 +11,7 @@ class BasicInfo extends React.Component {
     this.setUserInfo = props.setUserInfo;
     this.handleSubmit = this.handleSubmit.bind(this);
     this.focusNext = this.focusNext.bind(this);
-    this.fields = Array(3).fill().map( (_, i) => React.createRef() );
+    this.fields = Array(3).fill().map( () => React.createRef() );
   }
 
   focusNext(index) {
@@ -114,23 +114,29 @@ class BasicInfo extends React.Component {
               )}
             </Form.Item>
             <Form.Item>
-              {getFieldDecorator('lifespan', {
-                rules: [{
-                  transform: (value) => {
-                    value = Math.floor(value);
-                    return value > 0 ? value: NaN;
-                  },
-                  type: 'number', 
-                  message: 'Ex. 78 for the average American'
-                }]
-              })(
-                <Input
-                  placeholder='Expected Lifespan (years)'
-                  style={inputStyle}
-                  onPressEnter={this.focusNext(3)}
-                  ref={this.fields[2]}
-                />
-              )}
+              <Tooltip
+                trigger={['focus']}
+                title='Suggestion: Try 78 for the average American.'
+                placement="bottomLeft"
+              >
+                {getFieldDecorator('lifespan', {
+                  rules: [{
+                    transform: (value) => {
+                      value = Math.floor(value);
+                      return value > 0 ? value : NaN;
+                    },
+                    type: 'number',
+                    message: 'Please enter a positive number'
+                  }]
+                })(
+                  <Input
+                    placeholder='Expected Lifespan (years)'
+                    style={inputStyle}
+                    onPressEnter={this.focusNext(3)}
+                    ref={this.fields[2]}
+                  />
+                )}
+              </Tooltip>
             </Form.Item>
           </div>
           <div className='row-wrapper' style={rowWrapperStyle}>
@@ -149,7 +155,7 @@ const basicInfoStyle = {
   display: 'flex',
   flexFlow: 'column wrap',
   alignItem: 'center',
-  paddingTop: '20px',
+  marginTop: '22px',
   marginLeft: '16px' //To offset the margin-right of .ant-form-item
 }
 
