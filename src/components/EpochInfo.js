@@ -1,79 +1,38 @@
-import React from 'react';
-import { Form, Input, Button, Radio } from 'antd';
+import React, { useState } from 'react';
+import { Modal, Form, Input, Button } from 'antd';
 import { MyTag } from './MyComponents';
 
-const { TextArea } = Input;
 
-const titleStyle = {
-  width: '300px'
-}
-
-const descriptionStyle = {
-  width: '450px'
-}
-
-const containerStyle ={
-  padding: '50px'
-}
-
-const buttonStyle = {
-  width: '6em'
-}
-
-class EpochInfo extends React.Component {
+class EpochForm extends React.Component {
   constructor(props) {
     super(props);
-    this.setEpochs = props.setEpochs
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
-    this.handleSelectColor = this.handleSelectColor.bind(this);
-    this.focusNext = this.focusNext.bind(this);
-    this.field = React.createRef();
-    this.state = { color: undefined };
+    this.props = props;
+    this.descriptionRef = React.createRef();
   }
 
-  focusNext(e) {
+  focusNext = (e) => {
     e.preventDefault();
     this.field.current.focus();
   }
 
-  handleSelectColor(value) {
-    this.setState({ color: value });
-  }
-
-  handleCancel(e) {
-
-  }
-
-  handleSubmit(e) {
-    this.props.form.validateFields((err, values) => {
-      if (err) {
-        return;
-      } else {
-        let { title, description } =     
-          this.props.form.getFieldsValue(['title', 'description']);
-
-        this.setEpochs( epochs => {
-          return [...epochs, {
-            title: title.trim(),
-            description: description.trimRight(),
-            color: this.state.color,
-            start: 7*52,
-            end: 9*52
-          }];
-        });
-
-      }
-    });
+  handleSelectColor = (value) => {
+    this.props.form.setFieldsValue({color: value});
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+
+    const { visible, onCancel, onCreate, form} = this.props;
+    const { getFieldDecorator } = form;
 
     return (
-      <div style={containerStyle}>
-      <p style={{fontSize:'16px'}}>Create a life event (or an <em>epoch</em>)</p>
-      <Form className='EpochInfo' layout='horizontal'>
+      <Modal
+        visible={visible}
+        title='Create a new life stage'
+        okText='Save'
+        onCancel={onCancel}
+        onOk={onCreate}
+      >
+      <Form className='EpochInfo' layout='vertical' hideRequiredMark={true}>
         <Form.Item>
         {getFieldDecorator('title', {
                 rules: [{
@@ -83,18 +42,18 @@ class EpochInfo extends React.Component {
               })(
           <Input 
             placeholder='Title' 
-            style={titleStyle} 
+            style={{ width: '70%' }} 
             onPressEnter={this.focusNext}
           />
         )}
         </Form.Item>
         <Form.Item name='description'>
-        {getFieldDecorator('description', {validateTrigger: 'onSubmit'})(
-          <TextArea
-            autosize={{ minRows: 7 }}
+        {getFieldDecorator( 'description', 
+        {validateTrigger: 'onSubmit'})(
+          <Input.TextArea
+            autosize={{ minRows: 5 }}
             placeholder='Description' 
-            style={descriptionStyle}
-            ref={this.field}
+            ref={this.descriptionRef}
           />
         )}
         </Form.Item>
@@ -141,15 +100,74 @@ class EpochInfo extends React.Component {
           >
             purple
           </MyTag>
-        </Form.Item>
-        <Form.Item>
-          <Button style={buttonStyle} onClick={this.handleCancel}>Cancel</Button>
-          <Button style={buttonStyle} onClick={this.handleSubmit}>Save</Button>
+          {/* This invisible input elem is for antd's form validadtor */}
+          {getFieldDecorator('color', {
+            rules: [{
+              required: true, 
+              message: 'Pick a color!'
+            }],
+          })(
+            
+                <input style={{display: 'none' }}/>      
+          )}
         </Form.Item>
       </Form>
-      </div>
+      </Modal>
     );
   }  
 }
 
-export default Form.create()(EpochInfo);
+
+const WrappedEpochForm = Form.create()(EpochForm);
+
+export default function EpochInfo(props) {
+  const [visible, setVisible] = useState(false);
+  let wrappedFormRef;
+
+  const handleCancel = () => {
+    setVisible(false);
+    wrappedFormRef.props.form.resetFields();
+  };
+
+  const handleCreate = () => {
+    const form = wrappedFormRef.props.form;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+
+      props.setEpochs( epochs => {
+        return [...epochs, {
+          title: values.title.trim(),
+          description: (values.description || '').trimRight(),
+          color: values.color,
+          start: 7*52,
+          end: 9*52
+        }];
+      });
+      setVisible(false);
+      form.resetFields();
+    });
+  }
+
+  const showModal = () => {
+    setVisible(true);
+  }
+
+  const passFormRef = formRef => {
+    wrappedFormRef = formRef;
+  }
+
+  return (
+    <div>
+      <Button onClick={showModal}>Modal</Button>
+      <WrappedEpochForm 
+        wrappedComponentRef={passFormRef}
+        visible={visible}
+        onCancel={handleCancel}
+        onCreate={handleCreate}
+        epochs={props.epochs}
+      />
+    </div>
+  );
+}

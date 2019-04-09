@@ -20,7 +20,6 @@ export default function Calender({ userInfo, epochs, setEpochs }) {
         for (let epoch of epochs) {
           if (index >= epoch.start && index <= epoch.end) {
             item.color = epoch.color;
-            return item;
           }
         }
         return item;
