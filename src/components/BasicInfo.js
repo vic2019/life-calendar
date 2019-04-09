@@ -38,23 +38,18 @@ class BasicInfo extends React.Component {
     this.props.form.validateFields((err, values) => {
       if (err) {
         return;
-      } else {
-        let { name, gender, birthday, lifespan } =     
-          this.props.form.getFieldsValue([
-            'name', 'gender', 'birthday', 'lifespan'
-          ]);
-        
-        lifespan = lifespan > 150 ? 150: lifespan;
-
-        this.setUserInfo({
-          name: name.trim(),
-          gender: gender,
-          birthday: birthday,
-          lifespan: parseInt(lifespan),
-          startOfWeek: moment(birthday).startOf('week'),
-          duration: parseInt(lifespan) * 52
-        });
       }
+        
+      const lifespan = values.lifespan > 150 ? 150: values.lifespan;
+
+      this.setUserInfo({
+        name: values.name.trim(),
+        gender: values.gender,
+        birthday: values.birthday,
+        lifespan: parseInt(lifespan),
+        startOfWeek: moment(values.birthday).startOf('week'),
+        duration: parseInt(lifespan) * 52
+      });      
     });
   }
 
@@ -68,7 +63,7 @@ class BasicInfo extends React.Component {
               {getFieldDecorator('name', {
                 rules: [{
                   required: true, min: 1, whitespace: true, message: 'Please enter your name'
-                }],
+                }]
               })(
                 <Input 
                   placeholder='Name' 
@@ -81,7 +76,7 @@ class BasicInfo extends React.Component {
               {getFieldDecorator('gender', {
                 rules: [{
                   required: true, message: 'Please select a gender'
-                }],
+                }]
               })(
                 <Select
                   placeholder='Gender' 
