@@ -20,7 +20,6 @@ class EpochForm extends React.Component {
   }
 
   render() {
-
     const { visible, onCancel, onCreate, form} = this.props;
     const { getFieldDecorator } = form;
 
@@ -106,8 +105,7 @@ class EpochForm extends React.Component {
               required: true, 
               message: 'Pick a color!'
             }],
-          })(
-            
+          })(  
                 <input style={{display: 'none' }}/>      
           )}
         </Form.Item>
@@ -117,4 +115,51 @@ class EpochForm extends React.Component {
   }  
 }
 
-export default Form.create()(EpochForm);
+const WrappedEpochForm = Form.create()(EpochForm);
+
+
+
+export default function InputEpoch(props) {
+  const { modal, setModal, epochs, setEpochs, select } = props;
+  let wrappedFormRef
+
+  const handleCancel = () => {
+    setModal(false);
+    wrappedFormRef.props.form.resetFields();
+  };
+
+  const handleCreate = () => {
+    const form = wrappedFormRef.props.form;
+    form.validateFields((err, values) => {
+      if (err) {
+        return;
+      }
+
+      setEpochs([
+        ...epochs, {
+        title: values.title.trim(),
+        description: (values.description || '').trimRight(),
+        color: values.color,
+        start: select.current.start,
+        end: select.current.end
+      }]);
+
+      setModal(false);
+      form.resetFields();
+    });
+  }
+
+  const passFormRef = formRef => {
+    wrappedFormRef = formRef;
+  }
+
+  return (
+      <WrappedEpochForm 
+        wrappedComponentRef={passFormRef}
+        visible={modal}
+        onCancel={handleCancel}
+        onCreate={handleCreate}
+        epochs={epochs}
+      />
+  );
+}

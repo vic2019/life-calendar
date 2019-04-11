@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import uuidv4 from 'uuid/v4';
 import moment from 'moment';
-import WrappedEpochForm from './EpochForm';
+import InputEpoch from './EpochForm';
 
 const defaultEpoch = {
   uuid: uuidv4(),
@@ -14,9 +14,11 @@ const defaultEpoch = {
 
 
 export default function Calender({ userInfo, life }) {
-  const [modal, setModal] = useState(false);
   const prevLifespan = useRef(life.lifespan);
   const prevDOB = useRef(life.DOB.toString());
+  const select = useRef();
+
+  const [modal, setModal] = useState(false);
   const [units, setUnits] = useState(
     Array(life.lifespan * 26).fill()
   );
@@ -41,16 +43,22 @@ export default function Calender({ userInfo, life }) {
   };
 
 
-  const assignEpoch = (unit, index) => {
+  const assignEpoch = (_, index) => {
     let assignedEpoch;
     for (let epoch of epochs) {
-      if (index >= epoch.start && index <= epoch.end) {
-        assignedEpoch = epoch;
-      }
+      if (index < epoch.start || index > epoch.end) continue;
+      assignedEpoch = epoch;  
     }
 
     return (
-      <Unit epoch={assignedEpoch} setModal={setModal}>{'\u25a0'}</Unit>
+      <Unit
+        index={index}
+        epoch={assignedEpoch} 
+        setModal={setModal} 
+        select={select}
+      >
+        {'\u25a0'}
+      </Unit>
     );
   };
 
@@ -58,94 +66,54 @@ export default function Calender({ userInfo, life }) {
   useEffect(() => {
     if (prevLifespan.current === life.lifespan) return;
     setUnits(Array(life.lifespan * 26).fill({ content: '\u25a0' }));
-    alert('lifespan');
     prevLifespan.current = life.lifespan;
   }, [life.lifespan]);
 
   useEffect(() => {
     if(prevDOB.current === life.DOB.toString()) return;
     setEpochs([futureEpoch()]);
-    alert('DOB');
     prevDOB.current = life.DOB.toString();
   }, [life.DOB]);
-
-  // const createEpoch = () => {
-  //   const { epoch, setEpoch } = createEpoch
-  //   setEpochs([...epochs,)
-  // }
 
 
   return (
     <div>
-    <CreateEpoch modal={modal} setModal={setModal}
-      epochs={epochs} setEpochs={setEpochs}/>
-    <div className='Calender' style={calenderStyle}>
-      {units.length === 1 ? null: units.map(assignEpoch)}
-    </div>
+      <InputEpoch 
+        modal={modal} 
+        setModal={setModal}
+        epochs={epochs} 
+        setEpochs={setEpochs}
+        select={select}
+      />
+      <div className='Calender' style={calenderStyle}>
+        {units.length === 1 ? null: units.map(assignEpoch)}
+      </div>
     </div>
   );
 }
 
 
-function Unit({ epoch, children, setModal }) {
+function Unit({ index, epoch, children, setModal, select }) {
+  function handleMouseUp() {
+    const selection = window.getSelection();
+    const start = selection.anchorNode.parentNode.id;
+    const end = selection.focusNode.parentNode.id;
+
+    select.current = { start: start, end: end };
+    setModal(true);
+  }
+
   return (
-    <span className='Unit' style={{color: epoch? epoch.color: null}}
-    onMouseUp={setModal}>
-      {children[0]}
+    <span
+      id={String(index)}
+      className='Unit' 
+      style={{color: epoch? epoch.color: null}}
+      onMouseUp={handleMouseUp}
+    >
+      {children}
     </span>
   );
 }
-
-
-function CreateEpoch(props) {
-  // const [visible, setModal] = useState(false);
-  let wrappedFormRef
-
-  const handleCancel = () => {
-    props.setModal(false);
-    wrappedFormRef.props.form.resetFields();
-  };
-
-  const handleCreate = () => {
-    const form = wrappedFormRef.props.form;
-    form.validateFields((err, values) => {
-      if (err) {
-        return;
-      }
-
-      props.setEpochs([
-        ...props.epochs, {
-        title: values.title.trim(),
-        description: (values.description || '').trimRight(),
-        color: values.color,
-        start: 18*26,
-        end: 22*26
-      }]);
-
-      props.setModal(false);
-      form.resetFields();
-    });
-  }
-
-  // const showModal = () => {
-  //   props.setModal(true);
-  // }
-
-  const passFormRef = formRef => {
-    wrappedFormRef = formRef;
-  }
-
-  return (
-      <WrappedEpochForm 
-        wrappedComponentRef={passFormRef}
-        visible={props.modal}
-        onCancel={handleCancel}
-        onCreate={handleCreate}
-        epochs={props.epochs}
-      />
-  );
-}
-
 
 
 // Don't change the font-size easily!

@@ -56,14 +56,14 @@ code {
 
 
 .Unit {
-  transition: 0.16s;
-  /* margin-left: 1px;
-  margin-bottom: 1px; */
+  transition: 0.1s;
+  margin-left: 1px;
+  margin-bottom: 1px;
  
 }
 
 .Unit:hover {
-  transform: scale(1.5, 1.5) translate(0px, -3px) !important;
+  transform: scale(1.4, 1.4) translate(0px, -4px) !important;
   text-shadow: 0px 0px 6px white !important;
   color: red !important;
 
