@@ -18,12 +18,12 @@ code {
   box-sizing: border-box;
 }
 
-.container {
+.MainContainer {
   width: 100vw;
   min-height: 100vh;
 }
 
-.container > .header {
+.MainContainer > .Header {
   background-color:  #34495e;
   position: fixed;
   height: 10vh;
@@ -31,7 +31,7 @@ code {
   z-index: 1;
 }
 
-.container > .row {
+.MainContainer > .Row {
   position: relative;
   top: 10vh;
   display: flex;
@@ -46,13 +46,36 @@ code {
 .App {
   justify-content: center;
   background-color: #f2f4f4;
-  width: 660px;
+  width: 760px;
 }
 
 /* Don't change the padding! */
 .Calender {
- padding: 6px 30px 60px 31px;
+ padding: 6px 20px 60px 31px;
 }
+
+
+.Unit {
+  transition: 0.16s;
+  /* margin-left: 1px;
+  margin-bottom: 1px; */
+ 
+}
+
+.Unit:hover {
+  transform: scale(1.5, 1.5) translate(0px, -3px) !important;
+  text-shadow: 0px 0px 6px white !important;
+  color: red !important;
+
+  
+}
+
+.Unit::selection {
+  background-color: rgba(0,0,0,0) !important;
+  color: red !important;
+
+}
+
 
 @media only screen and (max-width: 1024px) {
   .Calender {

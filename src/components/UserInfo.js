@@ -1,6 +1,5 @@
 import React from 'react';
 import { Form, Input, Select, DatePicker, Button, Tooltip } from 'antd';
-import moment from 'moment';
 
 
 const { Option } = Select;
@@ -9,47 +8,32 @@ class BasicInfo extends React.Component {
   constructor(props) {
     super(props);
     this.setUserInfo = props.setUserInfo;
+    this.setLife = props.setLife;
+
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.focusNext = this.focusNext.bind(this);
-    this.fields = Array(3).fill().map( () => React.createRef() );
+
+    this.gender = React.createRef();
+    this.DOB = React.createRef();
+    this.lifespan = React.createRef();
   }
 
-  focusNext(index) {
-    return (e) => {
-      switch (index) {
-        case 0:
-        case 1:
-          this.fields[index].current.focus();
-          break;
-        case 2:
-          if (e === true) break;
-          setTimeout( () => this.fields[index].current.focus(), 0);
-          break;
-        case 3:
-          this.fields[2].current.blur();
-          break;
-        default:
-          break;
-      }
-    }
-  }
-
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (err) {
         return;
       }
-        
-      const lifespan = values.lifespan > 150 ? 150: values.lifespan;
 
       this.setUserInfo({
         name: values.name.trim(),
-        gender: values.gender,
-        birthday: values.birthday,
-        lifespan: parseInt(lifespan),
-        startOfWeek: moment(values.birthday).startOf('week'),
-        duration: parseInt(lifespan) * 52
-      });      
+        gender: values.gender
+      });
+      
+      const lifespan = parseInt(values.lifespan);
+      this.setLife({
+        DOB: values.DOB,
+        lifespan: lifespan <= 130 ? lifespan: 130,
+      });
     });
   }
 
@@ -67,7 +51,7 @@ class BasicInfo extends React.Component {
               })(
                 <Input 
                   placeholder='Name' 
-                  onPressEnter={this.focusNext(0)} 
+                  onPressEnter={()=>this.gender.current.focus()} 
                   style={inputStyle}
                 />
               )}
@@ -82,8 +66,12 @@ class BasicInfo extends React.Component {
                   placeholder='Gender' 
                   //placehold would disappear if assign 'value'
                   style={inputStyle}
-                  onChange={this.focusNext(1)}
-                  ref={this.fields[0]} 
+                  onChange={()=>this.DOB.current.focus()}
+                  onPressEnter={() => {
+                    if (this.gender.current.value === undefined) return;
+                    this.DOB.current.focus();
+                  }}
+                  ref={this.gender} 
                 >
                   <Option value='male'>Male</Option>
                   <Option value='female'>Female</Option>
@@ -92,19 +80,21 @@ class BasicInfo extends React.Component {
               )}
             </Form.Item>
           </div>
-          <div className='row-wrapper' style={rowWrapperStyle}>
+          <div className='UserInfoRowWrapper' style={rowWrapperStyle}>
             <Form.Item>
-              {getFieldDecorator('birthday', {
+              {getFieldDecorator('DOB', {
                 rules: [{
-                  required: true, message: 'Please enter your birthday'
+                  required: true, message: 'Please enter your date of birth'
                 }],
               })(
                 <DatePicker
-                  placeholder='Birthday (mm/dd/year)'
+                  placeholder='Date of Birth (mm/dd/year)'
                   style={inputStyle}
                   format={'MM/DD/YYYY'}
-                  onOpenChange={this.focusNext(2)}
-                  ref={this.fields[1]}
+                  onOpenChange={()=> {
+                    setTimeout(()=>this.lifespan.current.focus(), 0);
+                  }}
+                  ref={this.DOB}
                 />
               )}
             </Form.Item>
@@ -112,7 +102,7 @@ class BasicInfo extends React.Component {
               <Tooltip
                 trigger={['focus']}
                 title='Suggestion: Try 78 for the average American.'
-                placement="bottomLeft"
+                placement="topLeft"
               >
                 {getFieldDecorator('lifespan', {
                   rules: [{
@@ -126,15 +116,15 @@ class BasicInfo extends React.Component {
                 })(
                   <Input
                     placeholder='Expected Lifespan (years)'
-                    style={inputStyle}
-                    onPressEnter={this.focusNext(3)}
-                    ref={this.fields[2]}
+                    style={inputStyle}                    
+                    ref={this.lifespan}
+                    onPressEnter={this.handleSubmit}
                   />
                 )}
               </Tooltip>
             </Form.Item>
           </div>
-          <div className='row-wrapper' style={rowWrapperStyle}>
+          <div className='UserInfoRowWrapper' style={rowWrapperStyle}>
             <Form.Item>
               <Button onClick={this.handleSubmit}>Create My Calender!</Button>
             </Form.Item>
@@ -150,7 +140,7 @@ const basicInfoStyle = {
   display: 'flex',
   flexFlow: 'column wrap',
   alignItem: 'center',
-  marginTop: '22px',
+  marginTop: '24px',
   marginLeft: '16px' //To offset the margin-right of .ant-form-item
 }
 
@@ -161,6 +151,6 @@ const rowWrapperStyle = {
 }
 
 const inputStyle = {
-  width:'16em'
+  width:'17em'
 }
 

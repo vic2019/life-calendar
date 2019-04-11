@@ -5,9 +5,9 @@ import "./index.css";
 import "antd/dist/antd.css";
 
 ReactDOM.render( 
-  <div className='container'>
-    <div className='header'/>
-    <div className='row'>
+  <div className='MainContainer'>
+    <div className='Header'/>
+    <div className='Row'>
       <App/>
     </div>
   </div>,

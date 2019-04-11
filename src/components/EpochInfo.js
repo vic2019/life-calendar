@@ -117,57 +117,58 @@ class EpochForm extends React.Component {
   }  
 }
 
+export default Form.create()(EpochForm);
 
-const WrappedEpochForm = Form.create()(EpochForm);
+// const WrappedEpochForm = Form.create()(EpochForm);
+// export default WrappedEpochForm
 
-export default function EpochInfo(props) {
-  const [visible, setVisible] = useState(false);
-  let wrappedFormRef;
+// export default function CreateEpoch(props) {
+//   const [visible, setVisible] = useState(false);
+//   let wrappedFormRef;
 
-  const handleCancel = () => {
-    setVisible(false);
-    wrappedFormRef.props.form.resetFields();
-  };
+//   const handleCancel = () => {
+//     setVisible(false);
+//     wrappedFormRef.props.form.resetFields();
+//   };
 
-  const handleCreate = () => {
-    const form = wrappedFormRef.props.form;
-    form.validateFields((err, values) => {
-      if (err) {
-        return;
-      }
+//   const handleCreate = () => {
+//     const form = wrappedFormRef.props.form;
+//     form.validateFields((err, values) => {
+//       if (err) {
+//         return;
+//       }
 
-      props.setEpochs( epochs => {
-        return [...epochs, {
-          title: values.title.trim(),
-          description: (values.description || '').trimRight(),
-          color: values.color,
-          start: 7*52,
-          end: 9*52
-        }];
-      });
-      setVisible(false);
-      form.resetFields();
-    });
-  }
+//       props.setEpochs( epochs => {
+//         return [...epochs, {
+//           title: values.title.trim(),
+//           description: (values.description || '').trimRight(),
+//           color: values.color,
+//           start: 7*26,
+//           end: 9*26
+//         }];
+//       });
+//       setVisible(false);
+//       form.resetFields();
+//     });
+//   }
 
-  const showModal = () => {
-    setVisible(true);
-  }
+//   const showModal = () => {
+//     setVisible(true);
+//   }
 
-  const passFormRef = formRef => {
-    wrappedFormRef = formRef;
-  }
+//   const passFormRef = formRef => {
+//     wrappedFormRef = formRef;
+//   }
 
-  return (
-    <div>
-      <Button onClick={showModal}>Modal</Button>
-      <WrappedEpochForm 
-        wrappedComponentRef={passFormRef}
-        visible={visible}
-        onCancel={handleCancel}
-        onCreate={handleCreate}
-        epochs={props.epochs}
-      />
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <WrappedEpochForm 
+//         wrappedComponentRef={passFormRef}
+//         visible={visible}
+//         onCancel={handleCancel}
+//         onCreate={handleCreate}
+//         epochs={props.epochs}
+//       />
+//     </div>
+//   );
+// }
