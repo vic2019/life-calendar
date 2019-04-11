@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Button } from 'react';
+import React, { useState, useEffect, useRef, Button } from 'react';
 import uuidv4 from 'uuid/v4';
 import moment from 'moment';
 import WrappedEpochForm from './EpochInfo';
@@ -14,12 +14,16 @@ const defaultEpoch = {
 
 
 export default function Calender({ userInfo, life }) {
+  const prevLifespan = useRef(life.lifespan);
+  const prevDOB = useRef(life.DOB.toString());
   const [units, setUnits] = useState(
-    Array(life.lifespan * 26).fill({ content: '\u25a0' }));
-  const [epochs, setEpochs] = useState([futureEpoch(), defaultEpoch]);
-  [defaultEpoch.checked, defaultEpoch.setChecked] = useState(false);
-
+    Array(life.lifespan * 26).fill({ content: '\u25a0' })
+  );
   
+  [defaultEpoch.checked, defaultEpoch.setChecked] = useState(false);
+  const [epochs, setEpochs] = useState([futureEpoch(), defaultEpoch]);
+  
+
   function futureEpoch() {
     const unitZero = moment(life.DOB).startOf('week');
     const unitNow = Math.floor(moment.duration(moment().diff(unitZero))
@@ -30,7 +34,7 @@ export default function Calender({ userInfo, life }) {
       title: 'time to come',
       description: 'make the best use of it',
       start: unitNow,
-      end: units.length,
+      end: life.lifespan * 26,
       color: '#ffe57a'
     }
   };
@@ -51,9 +55,18 @@ export default function Calender({ userInfo, life }) {
 
 
   useEffect(() => {
+    if (prevLifespan.current === life.lifespan) return;
     setUnits(Array(life.lifespan * 26).fill({ content: '\u25a0' }));
+    alert('lifespan');
+    prevLifespan.current = life.lifespan;
+  }, [life.lifespan]);
+
+  useEffect(() => {
+    if(prevDOB.current === life.DOB.toString()) return;
     setEpochs([futureEpoch()]);
-  }, [life]);
+    alert('DOB');
+    prevDOB.current = life.DOB.toString();
+  }, [life.DOB]);
 
   // const createEpoch = () => {
   //   const { epoch, setEpoch } = createEpoch
@@ -61,31 +74,10 @@ export default function Calender({ userInfo, life }) {
   // }
 
 
-  // useEffect(() => {
-  //   // alert('use effect duration');
-  //   setWeeks(Array(userInfo.duration).fill()
-  //     .map( () => { return { content: '\u25a0' }; } )
-  //   );
-  // }, [userInfo.duration]);
-
-  // useEffect(() => {
-  //   // alert('use effect weeks');
-  //   setWeeks(oldWeeks => {
-  //     return oldWeeks.map((item, index) => {
-  //       for (let epoch of epochs) {
-  //         if (index >= epoch.start && index <= epoch.end) {
-  //           item.color = epoch.color;
-  //         }
-  //       }
-  //       return item;
-  //     })
-  //   });
-  // }, [epochs]);
-
   return (
     <div>
       {epochs[0].start} 
-    <CreateEpoch epochs={epochs}/>
+    {/* <CreateEpoch epochs={epochs}/> */}
     <div className='Calender' style={calenderStyle}>
       {units.length === 1 ? null: units.map(assignEpoch)}
     </div>
@@ -103,57 +95,57 @@ function Unit({ unit, epoch }) {
 }
 
 
-function CreateEpoch(props) {
-  const [visible, setVisible] = useState(false);
-  let wrappedFormRef
+// function CreateEpoch(props) {
+//   const [visible, setVisible] = useState(false);
+//   let wrappedFormRef
 
-  const handleCancel = () => {
-    setVisible(false);
-    wrappedFormRef.props.form.resetFields();
-  };
+//   const handleCancel = () => {
+//     setVisible(false);
+//     wrappedFormRef.props.form.resetFields();
+//   };
 
-  const handleCreate = () => {
-    const form = wrappedFormRef.props.form;
-    form.validateFields((err, values) => {
-      if (err) {
-        return;
-      }
+//   const handleCreate = () => {
+//     const form = wrappedFormRef.props.form;
+//     form.validateFields((err, values) => {
+//       if (err) {
+//         return;
+//       }
 
-      props.setEpochs( epochs => {
-        return [...epochs, {
-          title: values.title.trim(),
-          description: (values.description || '').trimRight(),
-          color: values.color,
-          start: 7*26,
-          end: 9*26
-        }];
-      });
-      setVisible(false);
-      form.resetFields();
-    });
-  }
+//       props.setEpochs( epochs => {
+//         return [...epochs, {
+//           title: values.title.trim(),
+//           description: (values.description || '').trimRight(),
+//           color: values.color,
+//           start: 7*26,
+//           end: 9*26
+//         }];
+//       });
+//       setVisible(false);
+//       form.resetFields();
+//     });
+//   }
 
-  const showModal = () => {
-    setVisible(true);
-  }
+//   const showModal = () => {
+//     setVisible(true);
+//   }
 
-  const passFormRef = formRef => {
-    wrappedFormRef = formRef;
-  }
+//   const passFormRef = formRef => {
+//     wrappedFormRef = formRef;
+//   }
 
-  return (
-    <div>
-      <Button onClick={showModal}>Modal</Button>
-      <WrappedEpochForm 
-        wrappedComponentRef={passFormRef}
-        visible={visible}
-        onCancel={handleCancel}
-        onCreate={handleCreate}
-        epochs={props.epochs}
-      />
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <Button onClick={showModal}>Modal</Button>
+//       <WrappedEpochForm 
+//         wrappedComponentRef={passFormRef}
+//         visible={visible}
+//         onCancel={handleCancel}
+//         onCreate={handleCreate}
+//         epochs={props.epochs}
+//       />
+//     </div>
+//   );
+// }
 
 
 
