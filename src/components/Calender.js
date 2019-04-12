@@ -3,13 +3,22 @@ import uuidv4 from 'uuid/v4';
 import moment from 'moment';
 import InputEpoch from './EpochForm';
 
-const defaultEpoch = {
+const defaultEpoch1 = {
   uuid: uuidv4(),
-  title: 'childhood',
+  title: 'A',
   description: 'a good time, i suppose..',
   start: 0,
-  end: 15*26,
+  end: 10,
   color: '#97e5fa',
+};
+
+const defaultEpoch2 = {
+  uuid: uuidv4(),
+  title: 'B',
+  description: 'never ending happiness',
+  start: 20,
+  end: 30,
+  color: '#abebc6',
 };
 
 
@@ -23,8 +32,8 @@ export default function Calender({ userInfo, life }) {
     Array(life.lifespan * 26).fill()
   );
   
-  [defaultEpoch.checked, defaultEpoch.setChecked] = useState(false);
-  const [epochs, setEpochs] = useState([futureEpoch(), defaultEpoch]);
+  // [defaultEpoch.checked, defaultEpoch.setChecked] = useState(false);
+  const [epochs, setEpochs] = useState([futureEpoch(), defaultEpoch1, defaultEpoch2]);
   
 
   function futureEpoch() {
@@ -54,6 +63,7 @@ export default function Calender({ userInfo, life }) {
       <Unit
         index={index}
         epoch={assignedEpoch} 
+        epochs={epochs}
         setModal={setModal} 
         select={select}
       >
@@ -93,13 +103,41 @@ export default function Calender({ userInfo, life }) {
 }
 
 
-function Unit({ index, epoch, children, setModal, select }) {
-  function handleMouseUp() {
+function Unit({ index, epoch, epochs, children, setModal, select }) {
+  function handleMouseUp(e) {
     const selection = window.getSelection();
-    const start = selection.anchorNode.parentNode.id;
-    const end = selection.focusNode.parentNode.id;
+    let anchor = selection.anchorNode.parentNode.id;
+    let anchorEpoch;
+    for (let epoch of epochs) {
+      if (anchor >= epoch.start && anchor <= epoch.end) {
+        anchorEpoch = epoch;
+        break;
+      }
+    }
 
-    select.current = { start: start, end: end };
+    let focus = selection.focusNode.parentNode.id;
+    let focusEpoch;
+    if (epoch && focus >= epoch.start && focus <= epoch.end) {
+      focusEpoch = epoch;
+    }
+
+    if (anchor > focus) {
+      [anchorEpoch, focusEpoch] = [focusEpoch, anchorEpoch];
+    }
+
+    let focusedEpoch;
+    if (focusEpoch) {
+      focusedEpoch = focusEpoch;
+      focus = focusEpoch.end;
+      if (anchorEpoch) {
+        anchor = anchorEpoch.end + 1;
+      }
+    } else if (anchorEpoch) {
+      focusedEpoch = anchorEpoch;
+      anchor = anchorEpoch.start;
+    }
+
+    select.current = { start: anchor, end: focus, epoch: focusedEpoch };
     setModal(true);
   }
 

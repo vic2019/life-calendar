@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Form, Input } from 'antd';
 import { MyTag } from './MyComponents';
+import uuidv4 from 'uuid/v4';
 
 
 class EpochForm extends React.Component {
@@ -135,13 +136,24 @@ export default function InputEpoch(props) {
         return;
       }
 
+      let updatedEpochs;
+      if(select.current.epoch) {
+        updatedEpochs = epochs.filter(epoch => {
+          if (epoch.uuid === select.current.epoch.uuid) return false;
+          return true;
+        });
+      }
+
+      updatedEpochs = updatedEpochs? updatedEpochs: epochs;
+
       setEpochs([
-        ...epochs, {
+        ...updatedEpochs, {
         title: values.title.trim(),
         description: (values.description || '').trimRight(),
         color: values.color,
         start: select.current.start,
-        end: select.current.end
+        end: select.current.end,
+        uuid: uuidv4()
       }]);
 
       setModal(false);
