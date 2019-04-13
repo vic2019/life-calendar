@@ -1,32 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import InputEpoch from './EpochForm';
-import { Tooltip } from 'antd';
 import dayjs from 'dayjs';
 import uuidv4 from 'uuid/v4';
-
-const defaultEpoch1 = {
-  uuid: uuidv4(),
-  title: 'A',
-  description: 'A des',
-  start: dayjs('1990-04-16').startOf('week'),
-  end: dayjs('1990-04-16').startOf('week').add(104, 'week'),
-  color: '#97e5fa',
-};
-
-const defaultEpoch2 = {
-  uuid: uuidv4(),
-  title: 'B',
-  description: 'B des',
-  start: dayjs('1990-04-16').startOf('week').add(208, 'week'),
-  end: dayjs('1990-04-16').startOf('week').add(832, 'week'),
-  color: '#abebc6',
-};
 
 
 export default function Calender({ userInfo, life }) {
   const prevDOB = useRef(life.DOB);
   const selectedEpoch = useRef(undefined);
-  const selectedPeriod = useRef({});
+  const selectedPeriod = useRef(undefined);
 
   const [modal, setModal] = useState(false);
   const [units, setUnits] = useState(
@@ -35,11 +16,10 @@ export default function Calender({ userInfo, life }) {
     })
   );
 
-  // [defaultEpoch.checked, defaultEpoch.setChecked] = useState(false);
   const [epochs, setEpochs] = useState([
+    childhoodEpoch(),
+    gradeSchoolEpoch(),
     futureEpoch(), 
-    defaultEpoch1, 
-    defaultEpoch2
   ]);
   
   function futureEpoch() {
@@ -52,6 +32,35 @@ export default function Calender({ userInfo, life }) {
       color: '#f9e79f'
     }
   };
+
+  function childhoodEpoch() {
+
+
+    return {
+      uuid: uuidv4(),
+      title: 'Early Childhood',
+      start: life.DOB.startOf('week'),
+      end: life.DOB.startOf('week').add(Math.floor(life.DOB.add(6, 'year').diff(life.DOB.startOf('week'), 'week')/2)*2, 'week'),
+      color: '#b3e5fc'
+    };
+  }
+
+  function gradeSchoolEpoch() {
+    const birthWeek = life.DOB.startOf('week');
+    const sixYearsOld = birthWeek.startOf('year').add(7*52 + 32, 'week');
+    const twelveYearsOld = birthWeek.startOf('year').add(12*52 + 24, 'week')
+    const diff6 = Math.floor(sixYearsOld.diff(birthWeek, 'week')/2)*2;
+    const diff12 = Math.floor(twelveYearsOld.diff(birthWeek, 'week')/2)*2;
+
+    return {
+      uuid: uuidv4(),
+      title: 'Grade School',
+      start: birthWeek.add(diff6 + 2, 'week'),
+      end: birthWeek.add(diff12 + 2, 'week' ),
+      color: '#7fb3d5'
+    };
+  }
+
 
   const assignEpoch = (item, index) => {
     let assignedEpoch;
@@ -83,7 +92,11 @@ export default function Calender({ userInfo, life }) {
     }));
 
     if (!prevDOB.current.isSame(life.DOB)) {
-      setEpochs([futureEpoch()]);
+      setEpochs([
+        childhoodEpoch(),
+        gradeSchoolEpoch(),
+        futureEpoch(), 
+      ]);
       prevDOB.current = life.DOB;
     }
   }, [life]);
@@ -111,7 +124,7 @@ function Unit(props) {
   const {item, epoch, epochs, setModal, selectedEpoch, selectedPeriod, children}
     = props;
   const id = item.date.format('YYYY-MM-DD');
-  const color = { color: epoch? epoch.color: '#808b96' };
+  const color = { color: epoch? epoch.color: '#c0c3c4' };
   const title = epoch? epoch.title + '  ' : '';
 
   function handleMouseUp() {
@@ -120,6 +133,7 @@ function Unit(props) {
     let anchor = dayjs(selection.anchorNode.parentNode.id);
     let focus = dayjs(selection.focusNode.parentNode.id);
     if (anchor.isAfter(focus)) [anchor, focus] = [focus, anchor];
+    selectedPeriod.current = { start: anchor, end: focus };
     
     selectedEpoch.current = undefined;
     for (let epoch of epochs) {
@@ -128,7 +142,6 @@ function Unit(props) {
       }
     }
     
-    selectedPeriod.current = { start: anchor, end: focus };
     setModal(true);
   }
 

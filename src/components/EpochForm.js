@@ -2,7 +2,6 @@ import React from 'react';
 import { Modal, Form, Input, Button } from 'antd';
 import { MyTag } from './MyComponents';
 import uuidv4 from 'uuid/v4';
-import dayjs from 'dayjs';
 
 
 class EpochForm extends React.Component {
@@ -21,9 +20,10 @@ class EpochForm extends React.Component {
     this.props.form.setFieldsValue({color: value});
   }
 
+
   render() {
-    const { visible, onCancel, onCreate, onDelete, form, selectedEpoch } 
-    = this.props;
+    const { visible, onCancel, onCreate, onDelete, form, 
+      selectedEpoch, modalTitle } = this.props;
     const { getFieldDecorator } = form;
     const { title, description, color } = selectedEpoch.current?
       selectedEpoch.current: {title: '', description: '', color: ''};
@@ -32,7 +32,7 @@ class EpochForm extends React.Component {
     return (
       <Modal
         visible={visible}
-        title={'Create a new life stage'}
+        title={modalTitle}
         okText='Save'
         onCancel={onCancel}
         onOk={onCreate}
@@ -207,6 +207,17 @@ export default function InputEpoch(props) {
     wrappedFormRef = formRef;
   }
 
+  const createModalTitle = () => {
+    let modalTitle = 'Create a life stage';
+    if (selectedPeriod.current) {
+      modalTitle += ' for ' + 
+      selectedPeriod.current.start.format('MMM D, YYYY') + ' to ' + 
+      selectedPeriod.current.end.add(13, 'day').format('MMM D, YYYY');
+    }
+
+    return modalTitle;
+  }
+
   return (
       <WrappedEpochForm 
         wrappedComponentRef={passFormRef}
@@ -215,6 +226,7 @@ export default function InputEpoch(props) {
         onCreate={handleCreate}
         onDelete={handleDelete}
         selectedEpoch={selectedEpoch}
+        modalTitle={createModalTitle()}
       />
   );
 }
