@@ -110,8 +110,9 @@ export default function Calender({ userInfo, life }) {
 function Unit(props) {
   const {item, epoch, epochs, setModal, selectedEpoch, selectedPeriod, children}
     = props;
-
   const id = item.date.format('YYYY-MM-DD');
+  const color = { color: epoch? epoch.color: '#808b96' };
+  const title = epoch? epoch.title + '  ' : '';
 
   function handleMouseUp() {
     const selection = window.getSelection();
@@ -132,16 +133,15 @@ function Unit(props) {
   }
 
   return (
-    <Tooltip placement='top' title={id} mouseEnterDelay={0.3}>
       <span
         id={id}
         className='Unit' 
-        style={{color: epoch? epoch.color: '#808b96'}}
+        style={color}
         onMouseUp={handleMouseUp}
       >
         {children}
+        <span className='Tooltip'>{title}{id}</span>
       </span>
-    </Tooltip>
   );
 }
 
@@ -151,7 +151,7 @@ const calenderStyle = {
   display: 'flex',
   flexFlow: 'row wrap',
   justifyContent: 'flex-start',
-  fontSize: '1.2em',
+  fontSize: '1.4em',
   lineHeight: '0.9',
 }
 

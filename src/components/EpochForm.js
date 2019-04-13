@@ -62,65 +62,81 @@ class EpochForm extends React.Component {
           />
         )}
         </Form.Item>
-        <Form.Item  label='Color:'>
+        <Form.Item>
           <MyTag 
-            color='gold' 
-            value='gold' 
-            onChecked={this.handleSelectColor}
-          >
-            gold
-          </MyTag>
-          <MyTag 
-            color='magenta' 
-            value='magenta' 
-            onChecked={this.handleSelectColor}
-          >
-            magenta
-          </MyTag>
-          <MyTag 
-            color='cyan' 
-            value='cyan' 
-            onChecked={this.handleSelectColor}
-          >
-            cyan
-          </MyTag>
-          <MyTag 
-            color='red' 
-            value='red' 
+            color='#e74c3c'
+            value='#e74c3c' 
             onChecked={this.handleSelectColor}
           >
             red
           </MyTag>
           <MyTag 
-            color='green' 
-            value='green' 
+            color='#c39bd3' 
+            value='#c39bd3' 
+            onChecked={this.handleSelectColor}
+          >
+            purple
+          </MyTag>
+          <MyTag 
+            color='#FFC0CB' 
+            value='#FFC0CB' 
+            onChecked={this.handleSelectColor}
+          >
+            pink
+          </MyTag>
+          <MyTag 
+            color='#7fb3d5' 
+            value='#7fb3d5' 
+            onChecked={this.handleSelectColor}
+          >
+            blue
+          </MyTag>
+          <MyTag 
+            color='#b3e5fc' 
+            value='#b3e5fc' 
+            onChecked={this.handleSelectColor}
+          >
+            sky
+          </MyTag>
+          <MyTag 
+            color='#a9dfbf' 
+            value='#a9dfbf' 
             onChecked={this.handleSelectColor}
           >
             green
           </MyTag>
           <MyTag 
-            color='purple' 
-            value='purple' 
+            color='#f7dc6f' 
+            value='#f7dc6f' 
             onChecked={this.handleSelectColor}
           >
-            purple
+            gold
+          </MyTag>
+          <MyTag 
+            color='#f5b041' 
+            value='#f5b041' 
+            onChecked={this.handleSelectColor}
+          >
+            orange
           </MyTag>
           {/* This invisible input elem is for antd's form validadtor */}
           {getFieldDecorator('color', {
             rules: [{
               required: true, 
               message: 'Pick a color!'
-            }],
+            }], initialValue: color
           })(  
                 <input style={{display: 'none' }}/>      
           )}
         </Form.Item>
+        <Form.Item>
         {selectedEpoch.current?
           <Form.Item>
             <Button type='danger' onClick={onDelete}>Delete</Button>
           </Form.Item>
           :null
         }
+        </Form.Item>
       </Form>
       </Modal>
     );
@@ -137,21 +153,19 @@ export default function InputEpoch(props) {
   let wrappedFormRef;
 
   const handleCancel = () => {
-    setModal(false);
     selectedPeriod.current = undefined;
     wrappedFormRef.props.form.resetFields();
-
+    setModal(false);
   };
 
   const handleCreate = () => {
-    setModal(false);
     
     const form = wrappedFormRef.props.form;
     form.validateFields((err, values) => {
       if (err) {
         return;
       }
-
+      
       let newEpoch = {
         title: values.title.trim(),
         description: (values.description || '').trimRight(),
@@ -171,23 +185,24 @@ export default function InputEpoch(props) {
       
       updatedEpochs.push(newEpoch);
       setEpochs(updatedEpochs);
-
+      
       selectedPeriod.current = undefined;
       form.resetFields();
+      setModal(false);
     });
   };
-
+  
   const handleDelete = () => {
     const updatedEpochs = epochs.filter( epoch => {
       return selectedEpoch.current.uuid !== epoch.uuid;
     });
     
     setEpochs(updatedEpochs);
-    setModal(false);
     selectedPeriod.current = undefined;
     wrappedFormRef.props.form.resetFields();
+    setModal(false);
   };
-
+  
   const passFormRef = formRef => {
     wrappedFormRef = formRef;
   }

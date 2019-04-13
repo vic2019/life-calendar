@@ -58,13 +58,12 @@ code {
 .Unit {
   transition: 0.1s;
   margin-left: 1px;
-  margin-bottom: 1px;
  
 }
 
 .Unit:hover {
   transform: scale(1.4, 1.4) translate(0px, -4px) !important;
-  text-shadow: 0px 0px 6px white !important;
+  text-shadow: 0px 0px 7px white !important;
   color: red !important;
 
   
@@ -72,7 +71,7 @@ code {
 
 .Unit::selection {
   background-color: rgba(0,0,0,0) !important;
-  color: red !important;
+  color: red;
 
 }
 
@@ -99,4 +98,29 @@ code {
   .Calender {
     padding: 2px 8px 40px 10px;
   }
+}
+
+.Unit .Tooltip {
+  visibility: hidden;
+  background-color: #383838;
+  text-align: center;
+  border-radius: 3px;
+  padding: 8px;
+  position: absolute;
+  z-index: 2;
+  bottom: 115%;
+
+  right: 105%;
+  opacity: 0;
+  transition: 0.3s;
+  transition-delay: 0.3s;
+  font-size: 0.6em;
+  line-height: 1.2em;
+}
+
+.Unit:hover .Tooltip {
+  visibility: visible;
+  opacity: 0.9;
+  color: white !important;
+  text-shadow: none;
 }
