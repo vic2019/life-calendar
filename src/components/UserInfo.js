@@ -33,7 +33,7 @@ class BasicInfo extends React.Component {
       const lifespan = parseInt(values.lifespan);
       this.setLife({
         DOB: dayjs(values.DOB.format()),
-        lifespan: lifespan <= 130 ? lifespan: 130,
+        lifespan: lifespan <= 100 ? lifespan: 100,
       });
     });
   }

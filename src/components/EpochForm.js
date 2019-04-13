@@ -1,7 +1,8 @@
 import React from 'react';
-import { Modal, Form, Input } from 'antd';
+import { Modal, Form, Input, Button } from 'antd';
 import { MyTag } from './MyComponents';
 import uuidv4 from 'uuid/v4';
+import dayjs from 'dayjs';
 
 
 class EpochForm extends React.Component {
@@ -21,13 +22,17 @@ class EpochForm extends React.Component {
   }
 
   render() {
-    const { visible, onCancel, onCreate, form} = this.props;
+    const { visible, onCancel, onCreate, onDelete, form, selectedEpoch } 
+    = this.props;
     const { getFieldDecorator } = form;
+    const { title, description, color } = selectedEpoch.current?
+      selectedEpoch.current: {title: '', description: '', color: ''};
+
 
     return (
       <Modal
         visible={visible}
-        title='Create a new life stage'
+        title={'Create a new life stage'}
         okText='Save'
         onCancel={onCancel}
         onOk={onCreate}
@@ -38,18 +43,18 @@ class EpochForm extends React.Component {
                 rules: [{
                   required: true, min: 1, whitespace: true, 
                   message: 'A title is required'
-                }],
+                }], initialValue: title
               })(
-          <Input 
-            placeholder='Title' 
-            style={{ width: '70%' }} 
+          <Input
+            placeholder='Title'
+            style={{ width: '24em' }} 
             onPressEnter={this.focusNext}
           />
         )}
         </Form.Item>
         <Form.Item name='description'>
         {getFieldDecorator( 'description', 
-        {validateTrigger: 'onSubmit'})(
+        {validateTrigger: 'onSubmit', initialValue: description})(
           <Input.TextArea
             autosize={{ minRows: 5 }}
             placeholder='Description' 
@@ -110,6 +115,12 @@ class EpochForm extends React.Component {
                 <input style={{display: 'none' }}/>      
           )}
         </Form.Item>
+        {selectedEpoch.current?
+          <Form.Item>
+            <Button type='danger' onClick={onDelete}>Delete</Button>
+          </Form.Item>
+          :null
+        }
       </Form>
       </Modal>
     );
@@ -123,7 +134,7 @@ const WrappedEpochForm = Form.create()(EpochForm);
 export default function InputEpoch(props) {
   const { modal, setModal, epochs, setEpochs, selectedEpoch, selectedPeriod } 
     = props;
-  let wrappedFormRef
+  let wrappedFormRef;
 
   const handleCancel = () => {
     setModal(false);
@@ -133,6 +144,8 @@ export default function InputEpoch(props) {
   };
 
   const handleCreate = () => {
+    setModal(false);
+    
     const form = wrappedFormRef.props.form;
     form.validateFields((err, values) => {
       if (err) {
@@ -143,29 +156,37 @@ export default function InputEpoch(props) {
         title: values.title.trim(),
         description: (values.description || '').trimRight(),
         color: values.color,
-        start: selectedEpoch.current? 
-          selectedEpoch.current.start: selectedPeriod.current.start,
-        end: selectedEpoch.current? 
-          selectedEpoch.current.end: selectedPeriod.current.end,
+        start: selectedPeriod.current.start,
+        end: selectedPeriod.current.end,
         uuid: selectedEpoch.current?
-          selectedEpoch.current.uuid: uuidv4()
+        selectedEpoch.current.uuid: uuidv4()
       }
-
+      
       let updatedEpochs = epochs;
       if (selectedEpoch.current) {
         updatedEpochs = epochs.filter( epoch => {
           return selectedEpoch.current.uuid !== epoch.uuid;
         });
       }
-
+      
       updatedEpochs.push(newEpoch);
       setEpochs(updatedEpochs);
 
-      setModal(false);
       selectedPeriod.current = undefined;
       form.resetFields();
     });
-  }
+  };
+
+  const handleDelete = () => {
+    const updatedEpochs = epochs.filter( epoch => {
+      return selectedEpoch.current.uuid !== epoch.uuid;
+    });
+    
+    setEpochs(updatedEpochs);
+    setModal(false);
+    selectedPeriod.current = undefined;
+    wrappedFormRef.props.form.resetFields();
+  };
 
   const passFormRef = formRef => {
     wrappedFormRef = formRef;
@@ -177,6 +198,7 @@ export default function InputEpoch(props) {
         visible={modal}
         onCancel={handleCancel}
         onCreate={handleCreate}
+        onDelete={handleDelete}
         selectedEpoch={selectedEpoch}
       />
   );

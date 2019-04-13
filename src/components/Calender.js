@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import uuidv4 from 'uuid/v4';
 import InputEpoch from './EpochForm';
+import { Tooltip } from 'antd';
 import dayjs from 'dayjs';
+import uuidv4 from 'uuid/v4';
 
 const defaultEpoch1 = {
   uuid: uuidv4(),
   title: 'A',
-  description: 'A',
+  description: 'A des',
   start: dayjs('1990-04-16').startOf('week'),
   end: dayjs('1990-04-16').startOf('week').add(104, 'week'),
   color: '#97e5fa',
@@ -15,7 +16,7 @@ const defaultEpoch1 = {
 const defaultEpoch2 = {
   uuid: uuidv4(),
   title: 'B',
-  description: 'B',
+  description: 'B des',
   start: dayjs('1990-04-16').startOf('week').add(208, 'week'),
   end: dayjs('1990-04-16').startOf('week').add(832, 'week'),
   color: '#abebc6',
@@ -25,7 +26,7 @@ const defaultEpoch2 = {
 export default function Calender({ userInfo, life }) {
   const prevDOB = useRef(life.DOB);
   const selectedEpoch = useRef(undefined);
-  const selectedPeriod = useRef(undefined);
+  const selectedPeriod = useRef({});
 
   const [modal, setModal] = useState(false);
   const [units, setUnits] = useState(
@@ -43,11 +44,11 @@ export default function Calender({ userInfo, life }) {
   
   function futureEpoch() {
     return {
-      uuid: uuidv4(),
-      title: 'time to come',
-      description: 'make the best use of it',
+      uuid: 'the future',
+      title: '',
+      description: '',
       start: dayjs().startOf('week'),
-      end: life.DOB.startOf('week').add(life.lifespan, 'year'),
+      end: life.DOB.startOf('week').add(131, 'year'),
       color: '#f9e79f'
     }
   };
@@ -107,36 +108,40 @@ export default function Calender({ userInfo, life }) {
 
 
 function Unit(props) {
-  const {item, epoch, epochs, setModal, selectedEpoch, selectedPeriod, children} 
+  const {item, epoch, epochs, setModal, selectedEpoch, selectedPeriod, children}
     = props;
+
+  const id = item.date.format('YYYY-MM-DD');
 
   function handleMouseUp() {
     const selection = window.getSelection();
+    
     let anchor = dayjs(selection.anchorNode.parentNode.id);
     let focus = dayjs(selection.focusNode.parentNode.id);
     if (anchor.isAfter(focus)) [anchor, focus] = [focus, anchor];
-
+    
     selectedEpoch.current = undefined;
     for (let epoch of epochs) {
       if (epoch.start.isSame(anchor) && epoch.end.isSame(focus)) {
         selectedEpoch.current = epoch;    
-        alert(epoch.title);   
       }
     }
-
+    
     selectedPeriod.current = { start: anchor, end: focus };
     setModal(true);
   }
 
   return (
-    <span
-      id={item.date.format()}
-      className='Unit' 
-      style={{color: epoch? epoch.color: '#808b96'}}
-      onMouseUp={handleMouseUp}
-    >
-      {children}
-    </span>
+    <Tooltip placement='top' title={id} mouseEnterDelay={0.3}>
+      <span
+        id={id}
+        className='Unit' 
+        style={{color: epoch? epoch.color: '#808b96'}}
+        onMouseUp={handleMouseUp}
+      >
+        {children}
+      </span>
+    </Tooltip>
   );
 }
 
