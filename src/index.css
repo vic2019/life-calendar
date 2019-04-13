@@ -67,6 +67,11 @@ code {
 /* Don't change the padding! */
 .Calender {
   padding: 10px 15px 60px 20px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+  font-size: 1.4em;
+  line-height: 0.9;
 }
 
 

@@ -61,9 +61,28 @@ export default function Calender({ userInfo, life }) {
     };
   }
 
+  function handleMouseUp() {
+    const selection = window.getSelection();
+    
+    let anchor = dayjs(selection.anchorNode.parentNode.id);
+    let focus = dayjs(selection.focusNode.parentNode.id);
+    if (anchor.isAfter(focus)) [anchor, focus] = [focus, anchor];
+    selectedPeriod.current = { start: anchor, end: focus };
+    
+    selectedEpoch.current = undefined;
+    for (let epoch of epochs) {
+      if (epoch.start.isSame(anchor) && epoch.end.isSame(focus)) {
+        selectedEpoch.current = epoch;    
+      }
+    }
+    
+    setModal(true);
+  }
 
-  const assignEpoch = (item, index) => {
+  function processUnit(item) {
     let assignedEpoch;
+    let id = item.date.format('YYYY-MM-DD');
+
     for (let epoch of epochs) {
       if ( (item.date.isAfter(epoch.start) || item.date.isSame(epoch.start)) 
         && (item.date.isBefore(epoch.end) || item.date.isSame(epoch.end)) ) {
@@ -73,17 +92,15 @@ export default function Calender({ userInfo, life }) {
 
     return (
       <Unit
-        item={item}
-        epoch={assignedEpoch} 
-        epochs={epochs}
-        setModal={setModal} 
-        selectedEpoch={selectedEpoch}
-        selectedPeriod={selectedPeriod}
+        key={id}
+        id={id}
+        assignedEpoch={assignedEpoch}
+        handleMouseUp={handleMouseUp}
       >
         {'\u25a0'}
-      </Unit>
+      </Unit>  
     );
-  };
+  }
 
 
   useEffect( () => {
@@ -112,8 +129,8 @@ export default function Calender({ userInfo, life }) {
         selectedEpoch={selectedEpoch}
         selectedPeriod={selectedPeriod}
       />
-      <div className='Calender' style={calenderStyle}>
-        {units.length === 1 ? null: units.map(assignEpoch)}
+      <div className='Calender'>
+        {units.length === 1 ? null: units.map(processUnit)}
       </div>
     </div>
   );
@@ -121,29 +138,10 @@ export default function Calender({ userInfo, life }) {
 
 
 function Unit(props) {
-  const {item, epoch, epochs, setModal, selectedEpoch, selectedPeriod, children}
-    = props;
-  const id = item.date.format('YYYY-MM-DD');
-  const color = { color: epoch? epoch.color: '#c0c3c4' };
-  const title = epoch? epoch.title + '  ' : '';
+  const { id, assignedEpoch, children, handleMouseUp } = props;
 
-  function handleMouseUp() {
-    const selection = window.getSelection();
-    
-    let anchor = dayjs(selection.anchorNode.parentNode.id);
-    let focus = dayjs(selection.focusNode.parentNode.id);
-    if (anchor.isAfter(focus)) [anchor, focus] = [focus, anchor];
-    selectedPeriod.current = { start: anchor, end: focus };
-    
-    selectedEpoch.current = undefined;
-    for (let epoch of epochs) {
-      if (epoch.start.isSame(anchor) && epoch.end.isSame(focus)) {
-        selectedEpoch.current = epoch;    
-      }
-    }
-    
-    setModal(true);
-  }
+  const color = { color: assignedEpoch? assignedEpoch.color: '#c0c3c4' };
+  const title = assignedEpoch? assignedEpoch.title + ' ' : '';
 
   return (
       <span
@@ -156,15 +154,5 @@ function Unit(props) {
         <span className='Tooltip'>{title}{id}</span>
       </span>
   );
-}
-
-
-// Don't change the font-size easily!
-const calenderStyle = {
-  display: 'flex',
-  flexFlow: 'row wrap',
-  justifyContent: 'flex-start',
-  fontSize: '1.4em',
-  lineHeight: '0.9',
 }
 
