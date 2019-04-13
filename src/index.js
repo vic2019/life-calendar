@@ -6,7 +6,7 @@ import "antd/dist/antd.css";
 
 ReactDOM.render( 
   <div className='MainContainer'>
-    <div className='Header'/>
+    {/* <div className='Header'/> */}
     <div className='Row'>
       <App/>
     </div>

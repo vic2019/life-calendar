@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 
 const defaultLife = {
   DOB: dayjs(),
-  lifespan: 0
+  lifespan: 100
 }
 
 export default function App() {

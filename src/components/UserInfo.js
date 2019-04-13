@@ -104,6 +104,7 @@ class BasicInfo extends React.Component {
                 trigger={['focus']}
                 title='Suggestion: Try 78 for the average American.'
                 placement="topLeft"
+                mouseEnterDelay={1}
               >
                 {getFieldDecorator('lifespan', {
                   rules: [{

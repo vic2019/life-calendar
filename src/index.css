@@ -23,15 +23,16 @@ code {
   min-height: 100vh;
 }
 
-.MainContainer > .Header {
+/* .MainContainer > .Header {
   background-color:  #34495e;
   position: fixed;
   height: 10vh;
   width: 100vw;
   z-index: 1;
-}
+} */
 
-.MainContainer > .Row {
+
+/* .MainContainer > .Row {
   position: relative;
   top: 10vh;
   display: flex;
@@ -41,17 +42,31 @@ code {
   align-items: stretch;
   justify-content: center;
   background-color: #5d6d7e;
+} */
+
+
+.MainContainer > .Row {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  min-height: 100vh;
+  width: 100vw;
+  align-items: stretch;
+  justify-content: center;
+  background-color: #5d6d7e;
 }
+
 
 .App {
   justify-content: center;
   background-color: #f2f4f4;
-  width: 760px;
+  width: 768px;
+  z-index: 1;
 }
 
 /* Don't change the padding! */
 .Calender {
- padding: 6px 20px 60px 31px;
+  padding: 10px 15px 60px 20px;
 }
 
 
@@ -78,30 +93,37 @@ code {
 
 @media only screen and (max-width: 1024px) {
   .Calender {
-    padding: 2px 12px 60px 22px;
+    padding: 10px 15px 60px 20px;
   }
 }
 
 @media only screen and (max-width: 768px) {
   .Calender {
-    padding: 2px 12px 50px 21px;
+    padding: 10px 15px 55px 19px;
   }
 }
 
 @media only screen and (max-width: 425px) {
   .Calender {
-    padding: 2px 4px 45px 16px;
+    padding: 4px 15px 40px 17px;
   }
 }
 
-@media only screen and (max-width: 376px) {
+@media only screen and (max-width: 375px) {
   .Calender {
-    padding: 2px 8px 40px 10px;
+    padding: 4px 15px 40px 18px;
+  }
+}
+
+@media only screen and (max-width: 320px) {
+  .Calender {
+    padding: 4px 8px 40px 9px;
   }
 }
 
 .Unit .Tooltip {
   visibility: hidden;
+  min-width: 8em;
   background-color: #383838;
   text-align: center;
   border-radius: 3px;
