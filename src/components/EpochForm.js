@@ -121,12 +121,15 @@ const WrappedEpochForm = Form.create()(EpochForm);
 
 
 export default function InputEpoch(props) {
-  const { modal, setModal, epochs, setEpochs, select } = props;
+  const { modal, setModal, epochs, setEpochs, selectedEpoch, selectedPeriod } 
+    = props;
   let wrappedFormRef
 
   const handleCancel = () => {
     setModal(false);
+    selectedPeriod.current = undefined;
     wrappedFormRef.props.form.resetFields();
+
   };
 
   const handleCreate = () => {
@@ -136,27 +139,30 @@ export default function InputEpoch(props) {
         return;
       }
 
-      let updatedEpochs;
-      if(select.current.epoch) {
-        updatedEpochs = epochs.filter(epoch => {
-          if (epoch.uuid === select.current.epoch.uuid) return false;
-          return true;
-        });
-      }
-
-      updatedEpochs = updatedEpochs? updatedEpochs: epochs;
-
-      setEpochs([
-        ...updatedEpochs, {
+      let newEpoch = {
         title: values.title.trim(),
         description: (values.description || '').trimRight(),
         color: values.color,
-        start: select.current.start,
-        end: select.current.end,
-        uuid: uuidv4()
-      }]);
+        start: selectedEpoch.current? 
+          selectedEpoch.current.start: selectedPeriod.current.start,
+        end: selectedEpoch.current? 
+          selectedEpoch.current.end: selectedPeriod.current.end,
+        uuid: selectedEpoch.current?
+          selectedEpoch.current.uuid: uuidv4()
+      }
+
+      let updatedEpochs = epochs;
+      if (selectedEpoch.current) {
+        updatedEpochs = epochs.filter( epoch => {
+          return selectedEpoch.current.uuid !== epoch.uuid;
+        });
+      }
+
+      updatedEpochs.push(newEpoch);
+      setEpochs(updatedEpochs);
 
       setModal(false);
+      selectedPeriod.current = undefined;
       form.resetFields();
     });
   }
@@ -171,7 +177,7 @@ export default function InputEpoch(props) {
         visible={modal}
         onCancel={handleCancel}
         onCreate={handleCreate}
-        epochs={epochs}
+        selectedEpoch={selectedEpoch}
       />
   );
 }

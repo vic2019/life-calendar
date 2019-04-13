@@ -3,7 +3,7 @@ import UserInfo from './UserInfo';
 import Calender from './Calender';
 import { Divider } from 'antd';
 
-import moment from 'moment'; // for development only
+import dayjs from 'dayjs'; // for development only
 
 const defaultUserInfo = {
   name: 'Jeanette',
@@ -11,7 +11,7 @@ const defaultUserInfo = {
 }
 
 const defaultLife = {
-  DOB: moment('1990-04-16'),
+  DOB: dayjs('1990-04-16'),
   lifespan: 95
 }
 

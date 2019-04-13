@@ -1,71 +1,74 @@
 import React, { useState, useEffect, useRef } from 'react';
 import uuidv4 from 'uuid/v4';
-import moment from 'moment';
 import InputEpoch from './EpochForm';
+import dayjs from 'dayjs';
 
 const defaultEpoch1 = {
   uuid: uuidv4(),
   title: 'A',
-  description: 'a good time, i suppose..',
-  start: 0,
-  end: 10,
+  description: 'A',
+  start: dayjs('1990-04-16').startOf('week'),
+  end: dayjs('1990-04-16').startOf('week').add(104, 'week'),
   color: '#97e5fa',
 };
 
 const defaultEpoch2 = {
   uuid: uuidv4(),
   title: 'B',
-  description: 'never ending happiness',
-  start: 20,
-  end: 30,
+  description: 'B',
+  start: dayjs('1990-04-16').startOf('week').add(208, 'week'),
+  end: dayjs('1990-04-16').startOf('week').add(832, 'week'),
   color: '#abebc6',
 };
 
 
 export default function Calender({ userInfo, life }) {
-  const prevLifespan = useRef(life.lifespan);
-  const prevDOB = useRef(life.DOB.toString());
-  const select = useRef();
+  const prevDOB = useRef(life.DOB);
+  const selectedEpoch = useRef(undefined);
+  const selectedPeriod = useRef(undefined);
 
   const [modal, setModal] = useState(false);
   const [units, setUnits] = useState(
-    Array(life.lifespan * 26).fill()
+    Array(life.lifespan * 26).fill().map( (_, index) => {
+      return { date: life.DOB.startOf('week').add(index * 2, 'week') }
+    })
   );
-  
+
   // [defaultEpoch.checked, defaultEpoch.setChecked] = useState(false);
-  const [epochs, setEpochs] = useState([futureEpoch(), defaultEpoch1, defaultEpoch2]);
+  const [epochs, setEpochs] = useState([
+    futureEpoch(), 
+    defaultEpoch1, 
+    defaultEpoch2
+  ]);
   
-
   function futureEpoch() {
-    const unitZero = moment(life.DOB).startOf('week');
-    const unitNow = Math.floor(moment.duration(moment().diff(unitZero))
-      .as('week') / 2);
-
     return {
       uuid: uuidv4(),
       title: 'time to come',
       description: 'make the best use of it',
-      start: unitNow,
-      end: life.lifespan * 26,
-      color: '#ffe57a'
+      start: dayjs().startOf('week'),
+      end: life.DOB.startOf('week').add(life.lifespan, 'year'),
+      color: '#f9e79f'
     }
   };
 
-
-  const assignEpoch = (_, index) => {
+  const assignEpoch = (item, index) => {
     let assignedEpoch;
     for (let epoch of epochs) {
-      if (index < epoch.start || index > epoch.end) continue;
-      assignedEpoch = epoch;  
+      if ( (item.date.isAfter(epoch.start) || item.date.isSame(epoch.start)) 
+        && (item.date.isBefore(epoch.end) || item.date.isSame(epoch.end)) ) {
+        assignedEpoch = epoch;
+      }
     }
 
     return (
       <Unit
-        index={index}
+        item={item}
         epoch={assignedEpoch} 
         epochs={epochs}
         setModal={setModal} 
-        select={select}
+        selectedEpoch={selectedEpoch}
+        selectedPeriod={selectedPeriod}
       >
         {'\u25a0'}
       </Unit>
@@ -73,17 +76,16 @@ export default function Calender({ userInfo, life }) {
   };
 
 
-  useEffect(() => {
-    if (prevLifespan.current === life.lifespan) return;
-    setUnits(Array(life.lifespan * 26).fill({ content: '\u25a0' }));
-    prevLifespan.current = life.lifespan;
-  }, [life.lifespan]);
+  useEffect( () => {
+    setUnits(Array(life.lifespan * 26).fill().map( (_, index) => {
+      return { date: life.DOB.startOf('week').add(index * 2, 'week') };
+    }));
 
-  useEffect(() => {
-    if(prevDOB.current === life.DOB.toString()) return;
-    setEpochs([futureEpoch()]);
-    prevDOB.current = life.DOB.toString();
-  }, [life.DOB]);
+    if (!prevDOB.current.isSame(life.DOB)) {
+      setEpochs([futureEpoch()]);
+      prevDOB.current = life.DOB;
+    }
+  }, [life]);
 
 
   return (
@@ -93,7 +95,8 @@ export default function Calender({ userInfo, life }) {
         setModal={setModal}
         epochs={epochs} 
         setEpochs={setEpochs}
-        select={select}
+        selectedEpoch={selectedEpoch}
+        selectedPeriod={selectedPeriod}
       />
       <div className='Calender' style={calenderStyle}>
         {units.length === 1 ? null: units.map(assignEpoch)}
@@ -103,49 +106,33 @@ export default function Calender({ userInfo, life }) {
 }
 
 
-function Unit({ index, epoch, epochs, children, setModal, select }) {
-  function handleMouseUp(e) {
+function Unit(props) {
+  const {item, epoch, epochs, setModal, selectedEpoch, selectedPeriod, children} 
+    = props;
+
+  function handleMouseUp() {
     const selection = window.getSelection();
-    let anchor = selection.anchorNode.parentNode.id;
-    let anchorEpoch;
+    let anchor = dayjs(selection.anchorNode.parentNode.id);
+    let focus = dayjs(selection.focusNode.parentNode.id);
+    if (anchor.isAfter(focus)) [anchor, focus] = [focus, anchor];
+
+    selectedEpoch.current = undefined;
     for (let epoch of epochs) {
-      if (anchor >= epoch.start && anchor <= epoch.end) {
-        anchorEpoch = epoch;
-        break;
+      if (epoch.start.isSame(anchor) && epoch.end.isSame(focus)) {
+        selectedEpoch.current = epoch;    
+        alert(epoch.title);   
       }
     }
 
-    let focus = selection.focusNode.parentNode.id;
-    let focusEpoch;
-    if (epoch && focus >= epoch.start && focus <= epoch.end) {
-      focusEpoch = epoch;
-    }
-
-    if (anchor > focus) {
-      [anchorEpoch, focusEpoch] = [focusEpoch, anchorEpoch];
-    }
-
-    let focusedEpoch;
-    if (focusEpoch) {
-      focusedEpoch = focusEpoch;
-      focus = focusEpoch.end;
-      if (anchorEpoch) {
-        anchor = anchorEpoch.end + 1;
-      }
-    } else if (anchorEpoch) {
-      focusedEpoch = anchorEpoch;
-      anchor = anchorEpoch.start;
-    }
-
-    select.current = { start: anchor, end: focus, epoch: focusedEpoch };
+    selectedPeriod.current = { start: anchor, end: focus };
     setModal(true);
   }
 
   return (
     <span
-      id={String(index)}
+      id={item.date.format()}
       className='Unit' 
-      style={{color: epoch? epoch.color: null}}
+      style={{color: epoch? epoch.color: '#808b96'}}
       onMouseUp={handleMouseUp}
     >
       {children}

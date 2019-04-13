@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Input, Select, DatePicker, Button, Tooltip } from 'antd';
+import dayjs from 'dayjs';
 
 
 const { Option } = Select;
@@ -31,7 +32,7 @@ class BasicInfo extends React.Component {
       
       const lifespan = parseInt(values.lifespan);
       this.setLife({
-        DOB: values.DOB,
+        DOB: dayjs(values.DOB.format()),
         lifespan: lifespan <= 130 ? lifespan: 130,
       });
     });
