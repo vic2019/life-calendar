@@ -132,7 +132,7 @@ class BasicInfo extends React.Component {
           </div>
           <div className='UserInfoRowWrapper' style={rowWrapperStyle}>
             <Form.Item>
-              <Button onClick={this.handleSubmit}>Create My Calender!</Button>
+              <Button onClick={this.handleSubmit}>Create My Calendar!</Button>
             </Form.Item>
           </div>
         </Form>

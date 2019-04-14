@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import UserInfo from './UserInfo';
-import Calender from './Calender';
+import Calendar from './Calendar';
 import { Divider } from 'antd';
 import dayjs from 'dayjs';
 
@@ -18,7 +18,7 @@ export default function App() {
     <div className='App'>
       <UserInfo setUserInfo={setUserInfo} setLife={setLife}/>
       <Divider/>
-      <Calender life={life} userInfo={userInfo}/>
+      <Calendar life={life} userInfo={userInfo}/>
     </div>
   );
 }
