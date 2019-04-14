@@ -44,6 +44,10 @@ class BasicInfo extends React.Component {
     return (
         <Form className='BasicInfo' layout='inline' style={basicInfoStyle}>
           <div className='row-wrapper' style={rowWrapperStyle}>
+            <h3>Each square represents two weeks of your life
+            </h3>
+          </div>
+          <div className='row-wrapper' style={rowWrapperStyle}>
             <Form.Item>
               {getFieldDecorator('name', {
                 rules: [{
