@@ -65,7 +65,7 @@ code {
 }
 
 /* Don't change the padding! */
-.Calender {
+.Calendar {
   padding: 10px 15px 60px 20px;
   display: flex;
   flex-flow: row wrap;
@@ -95,33 +95,32 @@ code {
 
 }
 
-
 @media only screen and (max-width: 1024px) {
-  .Calender {
+  .Calendar {
     padding: 10px 15px 60px 20px;
   }
 }
 
 @media only screen and (max-width: 768px) {
-  .Calender {
+  .Calendar {
     padding: 10px 15px 55px 19px;
   }
 }
 
 @media only screen and (max-width: 425px) {
-  .Calender {
+  .Calendar {
     padding: 4px 15px 40px 17px;
   }
 }
 
 @media only screen and (max-width: 375px) {
-  .Calender {
+  .Calendar {
     padding: 4px 15px 40px 18px;
   }
 }
 
 @media only screen and (max-width: 320px) {
-  .Calender {
+  .Calendar {
     padding: 4px 8px 40px 9px;
   }
 }

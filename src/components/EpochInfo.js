@@ -19,6 +19,7 @@ class EpochForm extends React.Component {
     this.props.form.setFieldsValue({color: value});
   }
 
+  
   render() {
 
     const { visible, onCancel, onCreate, form} = this.props;

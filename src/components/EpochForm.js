@@ -218,6 +218,7 @@ export default function InputEpoch(props) {
     return modalTitle;
   }
 
+  
   return (
       <WrappedEpochForm 
         wrappedComponentRef={passFormRef}
