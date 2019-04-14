@@ -42,11 +42,9 @@ class BasicInfo extends React.Component {
     const { getFieldDecorator } = this.props.form;
 
     return (
-        <Form className='BasicInfo' layout='inline' style={basicInfoStyle}>
-          <div className='row-wrapper' style={rowWrapperStyle}>
-            <h3>Each square represents two weeks of your life
-            </h3>
-          </div>
+        <Form className='UserInfo' layout='inline'>
+          <h2>Life Calendar:</h2>
+          <h3>Each tile represents two weeks of your life</h3>          
           <div className='row-wrapper' style={rowWrapperStyle}>
             <Form.Item>
               {getFieldDecorator('name', {
@@ -142,13 +140,6 @@ class BasicInfo extends React.Component {
 
 export default Form.create()(BasicInfo);
 
-const basicInfoStyle = {
-  display: 'flex',
-  flexFlow: 'column wrap',
-  alignItem: 'center',
-  marginTop: '24px',
-  marginLeft: '16px' //To offset the margin-right of .ant-form-item
-}
 
 const rowWrapperStyle = {
   display: 'flex',

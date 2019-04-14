@@ -64,6 +64,14 @@ code {
   z-index: 1;
 }
 
+.UserInfo {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  margin-top: 24px;
+  margin-left: 16px;
+}
+
 /* Don't change the padding! */
 .Calendar {
   padding: 10px 15px 60px 20px;

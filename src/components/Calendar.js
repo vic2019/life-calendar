@@ -106,8 +106,8 @@ function Unit(props) {
   
   return (
       <span
-      id={id}
-      className='Unit' 
+        id={id}
+        className='Unit' 
         style={color}
         onMouseUp={handleMouseUp}
       >
@@ -152,7 +152,7 @@ function setInitialEpochs(life) {
   
   const highschool = {
     uuid: uuidv4(),
-    title: 'Middle and High School',
+    title: 'Middle & High School',
     start: getFutureWeek(birthWeek, fallAt12Years).add(2, 'week'),
     end: getFutureWeek(birthWeek, springAt18Years),
     color: '#7fb3d5'
