@@ -4,22 +4,26 @@ import dayjs from 'dayjs';
 import uuidv4 from 'uuid/v4';
 
 
+const WrappedUnit = React.memo(Unit);
+
+
 export default function Calendar({ userInfo, life }) {
   const prevLife = useRef(life);
   const selectedEpoch = useRef(undefined);
   const selectedPeriod = useRef(undefined);
 
-  const [modal, setModal] = useState(false);
+  const [epochs, setEpochs] = useState(setInitialEpochs(life));
   const [units, setUnits] = useState(
     Array(life.lifespan * 26).fill().map( (_, index) => {
       return { date: life.DOB.startOf('week').add(index * 2, 'week') }
     })
-  );
-  const [epochs, setEpochs] = useState(setInitialEpochs(life));
-  
+    );
+  const [modal, setModal] = useState(false);
+    
   
   function handleMouseUp() {
     const selection = window.getSelection();
+    if (!selection) return;
     
     let anchor = dayjs(selection.anchorNode.parentNode.id);
     let focus = dayjs(selection.focusNode.parentNode.id);
@@ -40,7 +44,7 @@ export default function Calendar({ userInfo, life }) {
   function processUnit(item) {
     let assignedEpoch;
     let id = item.date.format('YYYY-MM-DD');
-
+    
     for (let epoch of epochs) {
       if ( (item.date.isAfter(epoch.start) || item.date.isSame(epoch.start)) 
       && (item.date.isBefore(epoch.end) || item.date.isSame(epoch.end)) ) {
@@ -48,15 +52,11 @@ export default function Calendar({ userInfo, life }) {
       }
     }
     
+    const color = assignedEpoch? assignedEpoch.color: '#c0c3c4';
+    const title = assignedEpoch? assignedEpoch.title + ' ' : '';
+
     return (
-      <Unit
-        key={id}
-        id={id}
-        assignedEpoch={assignedEpoch}
-        handleMouseUp={handleMouseUp}
-        >
-        {'\u25a0'}
-      </Unit>  
+      <WrappedUnit key={id} id={id} color={color} title={title}/>
     );
   }
 
@@ -89,7 +89,7 @@ export default function Calendar({ userInfo, life }) {
         selectedEpoch={selectedEpoch}
         selectedPeriod={selectedPeriod}
         />
-      <div className='Calendar'>
+      <div className='Calendar' onMouseUp={handleMouseUp}>
         {units.length === 1 ? null: units.map(processUnit)}
       </div>
     </div>
@@ -97,26 +97,18 @@ export default function Calendar({ userInfo, life }) {
 }
 
 
-
-function Unit(props) {
-  const { id, assignedEpoch, children, handleMouseUp } = props;
-  
-  const color = { color: assignedEpoch? assignedEpoch.color: '#c0c3c4' };
-  const title = assignedEpoch? assignedEpoch.title + ' ' : '';
-  
+function Unit({ id, color, title }) {
   return (
       <span
         id={id}
         className='Unit' 
-        style={color}
-        onMouseUp={handleMouseUp}
+        style={{color: color}}
       >
-        {children}
+        {'\u25a0'}
         <span className='Tooltip'>{title}{id}</span>
       </span>
   );
 }
-
 
 
 function setInitialEpochs(life) {
