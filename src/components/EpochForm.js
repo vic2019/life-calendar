@@ -3,16 +3,15 @@ import { Modal, Form, Input, Button } from 'antd';
 import { MyTag } from './MyComponents';
 import uuidv4 from 'uuid/v4';
 
-const red =   '#f44336' 
-const purple =  '#ab47bc' 
-const pink =  '#f06292'
-const blue =  '#5c6bc0' 
-const teal =  '#26a69a' 
-const sky =  '#29b6f6' 
-const green = '#66bb6a'
-const gold = '#fdd835'
-const orange = '#ffa726'
 
+const coral = '#f1948a';
+const salmon = '#FFC0CB';
+const purple = '#c39bd3'; 
+const cyan = '#7fb3d5';
+const sky = '#d4e6f1';
+const lime = '#7dcea0';
+const gold = '#f1c40f';
+const orange = '#f5b041';
 
 
 class EpochForm extends React.Component {
@@ -75,11 +74,18 @@ class EpochForm extends React.Component {
         </Form.Item>
         <Form.Item>
           <MyTag 
-            color={red}
-            value={red}
+            color={coral}
+            value={coral}
             onChecked={this.handleSelectColor}
           >
-            red
+            coral
+          </MyTag>
+          <MyTag 
+            color={salmon}
+            value={salmon}
+            onChecked={this.handleSelectColor}
+          >
+            salmon
           </MyTag>
           <MyTag 
             color={purple} 
@@ -89,25 +95,11 @@ class EpochForm extends React.Component {
             purple
           </MyTag>
           <MyTag 
-            color={pink} 
-            value={pink} 
+            color={cyan} 
+            value={cyan} 
             onChecked={this.handleSelectColor}
           >
-            pink
-          </MyTag>
-          <MyTag 
-            color={blue} 
-            value={blue} 
-            onChecked={this.handleSelectColor}
-          >
-            blue
-          </MyTag>
-          <MyTag 
-            color={teal} 
-            value={teal} 
-            onChecked={this.handleSelectColor}
-          >
-            teal
+            cyan
           </MyTag>
           <MyTag 
             color={sky} 
@@ -117,11 +109,11 @@ class EpochForm extends React.Component {
             sky
           </MyTag>
           <MyTag 
-            color={green} 
-            value={green} 
+            color={lime} 
+            value={lime} 
             onChecked={this.handleSelectColor}
           >
-            green
+            lime
           </MyTag>
           <MyTag 
             color={gold} 
@@ -177,7 +169,7 @@ export default function InputEpoch(props) {
   };
 
   const handleCreate = () => {
-    
+  
     const form = wrappedFormRef.props.form;
     form.validateFields((err, values) => {
       if (err) {

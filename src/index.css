@@ -50,14 +50,15 @@ code {
   align-items: stretch;
   justify-content: center;
   background-image: url('./nyc.jpeg');
-  background-size: 100vw auto;
+  background-size: cover;
   background-attachment: fixed;
-  background-position: left center;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .App {
   justify-content: center;
-  width: 768px;
+  width: 800px;
   z-index: 1;
 }
 
@@ -65,8 +66,8 @@ code {
   background-color: rgba(256, 256, 256, 0.6);
   padding-top: 20px;
   padding-bottom: 26px;
-  margin-top: 30px;
-  border-radius: 5px;
+  margin-top: 45px;
+  border-radius: 6px;
   line-height: 1.5;
   text-align: center;
   color: #555555;
@@ -87,50 +88,49 @@ code {
 }
 
 .Calendar {
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 35px 16px 40px 20px;
-  margin-top: 40px;
-  margin-bottom: 40px;
-  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.92);
+  min-height: 280px;
+  padding: 40px 20px 50px 22px;
+  margin-top: 50px;
+  margin-bottom: 70px;
+  border-radius: 6px;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
-  font-size: 1.1em;
+  font-size: 1.2em;
   line-height: 0.9;
 }
 
-@media only screen and (max-width: 1024px) {
-  .Calendar {
-    padding: 35px 16px 40px 20px;
-  }
-}
 
 @media only screen and (max-width: 768px) {
   .Calendar {
-    padding: 35px 15px 40px 19px;
+    padding: 40px 20px 50px 23px;
   }
 }
 
 @media only screen and (max-width: 425px) {
   .Calendar {
-    padding: 35px 11px 30px 13px;
+    padding: 40px 15px 50px 17px;
   }
 }
 
 @media only screen and (max-width: 375px) {
   .Calendar {
-    padding: 35px 8px 30px 8px;
+    padding: 30px 10px 35px 10px;
+    background-size: auto 100vh;
   }
 }
 
 @media only screen and (max-width: 320px) {
   .Calendar {
-    padding: 35px 8px 30px 9px;
+    padding: 30px 8px 35px 8px;
+    background-size: auto 100vh;
   }
 }
 
-.Calendar .Unit {
+.Unit {
   transition: 0.12s;
+  font-size: 1.1em;
   margin-left: 1px;
 }
 
@@ -146,25 +146,25 @@ code {
 
 .Tooltip {
   visibility: hidden;
-  min-width: 8em;
   background-color: #383838;
-  text-align: center;
+  min-width: 8em;
+  padding: 7px;
   border-radius: 3px;
-  padding: 8px;
   position: absolute;
   z-index: 2;
   bottom: 115%;
   right: 105%;
   opacity: 0;
-  transition: 0.3s;
+  transition: 0.2s;
   transition-delay: 0.5s;
-  font-size: 0.7em;
+  text-align: center;
+  font-size: 0.6em;
   line-height: 1.2em;
+  text-shadow: none;
 }
 
 .Unit:hover .Tooltip {
   visibility: visible;
   opacity: 0.9;
   color: white;
-  text-shadow: none;
 }

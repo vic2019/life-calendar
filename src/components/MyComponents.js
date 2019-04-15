@@ -18,10 +18,6 @@ function MyTag(props) {
     <span onClick={() => {props.onChecked && props.onChecked(props.value)}}>
       <Tag 
         color={props.color}
-        // afterClose={props.afterClose? props.afterClose: null}
-        // closable={props.closable? props.closable: null }
-        // onClose={props.onClose? props.closable: null}
-        // visible={props.visible? props.visible: null}
       >
         {props.children}
       </Tag>
