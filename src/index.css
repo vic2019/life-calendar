@@ -14,10 +14,6 @@ code {
   monospace;
 }
 
-* {
-  box-sizing: border-box;
-}
-
 .MainContainer {
   width: 100vw;
   min-height: 100vh;
@@ -53,87 +49,102 @@ code {
   width: 100vw;
   align-items: stretch;
   justify-content: center;
-  background-color: #5d6d7e;
+  background-image: url('./nyc.jpeg');
+  background-size: 100vw auto;
+  background-attachment: fixed;
+  background-position: left center;
 }
-
 
 .App {
   justify-content: center;
-  background-color: #f2f4f4;
   width: 768px;
   z-index: 1;
 }
 
 .UserInfo {
+  background-color: rgba(256, 256, 256, 0.6);
+  padding-top: 20px;
+  padding-bottom: 26px;
+  margin-top: 30px;
+  border-radius: 5px;
+  line-height: 1.5;
+  text-align: center;
+  color: #555555;
+}
+
+.UserInfoRowWrapper {
   display: flex;
-  flex-flow: column wrap;
-  align-items: center;
-  margin-top: 24px;
+  flex-flow: row wrap;
+  justify-content: center;
   margin-left: 16px;
 }
 
-/* Don't change the padding! */
+.UserInfoForm {
+  display: flex;
+  flex-flow: column wrap;
+  align-items: center;
+  padding-left: 16px;
+}
+
 .Calendar {
-  padding: 10px 15px 60px 20px;
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 35px 16px 40px 20px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+  border-radius: 5px;
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
-  font-size: 1.4em;
+  font-size: 1.1em;
   line-height: 0.9;
-}
-
-
-.Unit {
-  transition: 0.1s;
-  margin-left: 1px;
- 
-}
-
-.Unit:hover {
-  transform: scale(1.4, 1.4) translate(0px, -4px) !important;
-  text-shadow: 0px 0px 7px white !important;
-  color: red !important;
-
-  
-}
-
-.Unit::selection {
-  background-color: rgba(0,0,0,0) !important;
-  color: red;
-
 }
 
 @media only screen and (max-width: 1024px) {
   .Calendar {
-    padding: 10px 15px 60px 20px;
+    padding: 35px 16px 40px 20px;
   }
 }
 
 @media only screen and (max-width: 768px) {
   .Calendar {
-    padding: 10px 15px 55px 19px;
+    padding: 35px 15px 40px 19px;
   }
 }
 
 @media only screen and (max-width: 425px) {
   .Calendar {
-    padding: 4px 15px 40px 17px;
+    padding: 35px 11px 30px 13px;
   }
 }
 
 @media only screen and (max-width: 375px) {
   .Calendar {
-    padding: 4px 15px 40px 18px;
+    padding: 35px 8px 30px 8px;
   }
 }
 
 @media only screen and (max-width: 320px) {
   .Calendar {
-    padding: 4px 8px 40px 9px;
+    padding: 35px 8px 30px 9px;
   }
 }
 
-.Unit .Tooltip {
+.Calendar .Unit {
+  transition: 0.12s;
+  margin-left: 1px;
+}
+
+.Unit:hover {
+  transform: scale(1.4, 1.4) translate(0px, -3px);
+  color: red !important;
+}
+
+.Unit::selection {
+  background-color: rgba(0,0,0,0);
+  color: red;
+}
+
+.Tooltip {
   visibility: hidden;
   min-width: 8em;
   background-color: #383838;
@@ -143,18 +154,17 @@ code {
   position: absolute;
   z-index: 2;
   bottom: 115%;
-
   right: 105%;
   opacity: 0;
   transition: 0.3s;
-  transition-delay: 0.3s;
-  font-size: 0.6em;
+  transition-delay: 0.5s;
+  font-size: 0.7em;
   line-height: 1.2em;
 }
 
 .Unit:hover .Tooltip {
   visibility: visible;
   opacity: 0.9;
-  color: white !important;
+  color: white;
   text-shadow: none;
 }

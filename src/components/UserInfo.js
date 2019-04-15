@@ -42,10 +42,19 @@ class BasicInfo extends React.Component {
     const { getFieldDecorator } = this.props.form;
 
     return (
-        <Form className='UserInfo' layout='inline'>
-          <h2>Life Calendar:</h2>
-          <h3>Each tile represents two weeks of your life</h3>          
-          <div className='row-wrapper' style={rowWrapperStyle}>
+        <div className='UserInfo'>
+          <h1 className='Title'>
+            Life Calendar:
+          </h1>
+          <h3 className='Subtitle' style={{
+            textAlign: 'center', 
+            color: '#555555', 
+            padding: '0 0 12px 0'
+          }}>
+            Each tile represents two weeks of your life
+          </h3> 
+        <Form className='UserInfoForm' layout='inline'>  
+          <div className='UserInfoRowWrapper'>
             <Form.Item>
               {getFieldDecorator('name', {
                 rules: [{
@@ -83,7 +92,7 @@ class BasicInfo extends React.Component {
               )}
             </Form.Item>
           </div>
-          <div className='UserInfoRowWrapper' style={rowWrapperStyle}>
+          <div className='UserInfoRowWrapper'>
             <Form.Item>
               {getFieldDecorator('DOB', {
                 rules: [{
@@ -106,7 +115,6 @@ class BasicInfo extends React.Component {
                 trigger={['focus']}
                 title='Suggestion: Try 78 for the average American.'
                 placement="topLeft"
-                mouseEnterDelay={1}
               >
                 {getFieldDecorator('lifespan', {
                   rules: [{
@@ -128,12 +136,15 @@ class BasicInfo extends React.Component {
               </Tooltip>
             </Form.Item>
           </div>
-          <div className='UserInfoRowWrapper' style={rowWrapperStyle}>
+          <div className='UserInfoRowWrapper'>
             <Form.Item>
-              <Button onClick={this.handleSubmit}>Create My Calendar!</Button>
+              <Button type='primary' style={buttonStyle} onClick={this.handleSubmit}>
+                Create My Calendar!
+              </Button>
             </Form.Item>
           </div>
         </Form>
+      </div>
     );
   }
 }
@@ -141,13 +152,10 @@ class BasicInfo extends React.Component {
 export default Form.create()(BasicInfo);
 
 
-const rowWrapperStyle = {
-  display: 'flex',
-  flexFlow: 'row wrap',
-  justifyContent: 'center',
-}
-
 const inputStyle = {
-  width:'17em'
+  width: '17em',
 }
 
+const buttonStyle = {
+  marginTop: '20px'
+}

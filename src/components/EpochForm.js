@@ -3,6 +3,17 @@ import { Modal, Form, Input, Button } from 'antd';
 import { MyTag } from './MyComponents';
 import uuidv4 from 'uuid/v4';
 
+const red =   '#f44336' 
+const purple =  '#ab47bc' 
+const pink =  '#f06292'
+const blue =  '#5c6bc0' 
+const teal =  '#26a69a' 
+const sky =  '#29b6f6' 
+const green = '#66bb6a'
+const gold = '#fdd835'
+const orange = '#ffa726'
+
+
 
 class EpochForm extends React.Component {
   constructor(props) {
@@ -64,57 +75,64 @@ class EpochForm extends React.Component {
         </Form.Item>
         <Form.Item>
           <MyTag 
-            color='#e74c3c'
-            value='#e74c3c' 
+            color={red}
+            value={red}
             onChecked={this.handleSelectColor}
           >
             red
           </MyTag>
           <MyTag 
-            color='#c39bd3' 
-            value='#c39bd3' 
+            color={purple} 
+            value={purple} 
             onChecked={this.handleSelectColor}
           >
             purple
           </MyTag>
           <MyTag 
-            color='#FFC0CB' 
-            value='#FFC0CB' 
+            color={pink} 
+            value={pink} 
             onChecked={this.handleSelectColor}
           >
             pink
           </MyTag>
           <MyTag 
-            color='#7fb3d5' 
-            value='#7fb3d5' 
+            color={blue} 
+            value={blue} 
             onChecked={this.handleSelectColor}
           >
             blue
           </MyTag>
           <MyTag 
-            color='#b3e5fc' 
-            value='#b3e5fc' 
+            color={teal} 
+            value={teal} 
+            onChecked={this.handleSelectColor}
+          >
+            teal
+          </MyTag>
+          <MyTag 
+            color={sky} 
+            value={sky} 
             onChecked={this.handleSelectColor}
           >
             sky
           </MyTag>
           <MyTag 
-            color='#a9dfbf' 
-            value='#a9dfbf' 
+            color={green} 
+            value={green} 
             onChecked={this.handleSelectColor}
           >
             green
           </MyTag>
           <MyTag 
-            color='#f7dc6f' 
-            value='#f7dc6f' 
+            color={gold} 
+            value={gold} 
             onChecked={this.handleSelectColor}
           >
             gold
           </MyTag>
           <MyTag 
-            color='#f5b041' 
-            value='#f5b041' 
+            color={orange} 
+            value={orange} 
             onChecked={this.handleSelectColor}
           >
             orange
@@ -208,9 +226,9 @@ export default function InputEpoch(props) {
   }
 
   const createModalTitle = () => {
-    let modalTitle = 'Create a life stage';
+    const modalTitle = 'Create a life stage';
     if (selectedPeriod.current) {
-      modalTitle += ' for ' + 
+      return modalTitle + ' for ' + 
       selectedPeriod.current.start.format('MMM D, YYYY') + ' to ' + 
       selectedPeriod.current.end.add(13, 'day').format('MMM D, YYYY');
     }

@@ -52,7 +52,7 @@ export default function Calendar({ userInfo, life }) {
       }
     }
     
-    const color = assignedEpoch? assignedEpoch.color: '#c0c3c4';
+    const color = assignedEpoch? assignedEpoch.color: '#999999';
     const title = assignedEpoch? assignedEpoch.title + ' ' : '';
 
     return (

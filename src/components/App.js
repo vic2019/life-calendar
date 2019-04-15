@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import UserInfo from './UserInfo';
 import Calendar from './Calendar';
-import { Divider } from 'antd';
 import dayjs from 'dayjs';
 
 
 const defaultLife = {
-  DOB: dayjs(),
+  DOB: dayjs('2020-01-01'),
   lifespan: 32
 };
 
@@ -23,7 +22,6 @@ export default function App() {
   return (    
     <div className='App'>
       <UserInfo setUserInfo={setUserInfo} setLife={setLife}/>
-      <Divider/>
       <Calendar life={life} userInfo={userInfo}/>
     </div>
   );
