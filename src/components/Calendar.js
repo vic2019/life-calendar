@@ -15,7 +15,7 @@ export default function Calendar({ userInfo, life }) {
   const [epochs, setEpochs] = useState(setInitialEpochs(life));
   const [units, setUnits] = useState(
     Array(life.lifespan * 26).fill().map( (_, index) => {
-      return { date: life.DOB.startOf('week').add(index * 2, 'week') }
+      return life.DOB.startOf('week').add(index * 2, 'week')
     })
     );
   const [modal, setModal] = useState(false);
@@ -42,12 +42,13 @@ export default function Calendar({ userInfo, life }) {
   
 
   function processUnit(item) {
-    let assignedEpoch;
-    let id = item.date.format('YYYY-MM-DD');
+    const id = item.format('YYYY-MM-DD');
+    const age = 'Age ' + Math.floor(item.diff(life.DOB, 'year'));
     
+    let assignedEpoch;
     for (let epoch of epochs) {
-      if ( (item.date.isAfter(epoch.start) || item.date.isSame(epoch.start)) 
-      && (item.date.isBefore(epoch.end) || item.date.isSame(epoch.end)) ) {
+      if ( (item.isAfter(epoch.start) || item.isSame(epoch.start)) 
+      && (item.isBefore(epoch.end) || item.isSame(epoch.end)) ) {
         assignedEpoch = epoch;
       }
     }
@@ -56,7 +57,7 @@ export default function Calendar({ userInfo, life }) {
     const title = assignedEpoch? assignedEpoch.title + ' ' : '';
 
     return (
-      <WrappedUnit key={id} id={id} color={color} title={title}/>
+      <WrappedUnit key={id} id={id} color={color} age={age} title={title}/>
     );
   }
 
@@ -65,13 +66,13 @@ export default function Calendar({ userInfo, life }) {
     if (!prevLife.current.DOB.isSame(life.DOB)) {
       setEpochs(setInitialEpochs(life));
       setUnits(Array(life.lifespan * 26).fill().map( (_, index) => {
-        return { date: life.DOB.startOf('week').add(index * 2, 'week') };
+        return life.DOB.startOf('week').add(index * 2, 'week');
       }));
       prevLife.current = life;
 
     } else if (prevLife.current.lifespan !== life.lifespan) {
       setUnits(Array(life.lifespan * 26).fill().map( (_, index) => {
-        return { date: life.DOB.startOf('week').add(index * 2, 'week') };
+        return life.DOB.startOf('week').add(index * 2, 'week');
       }));
       prevLife.current = life;
 
@@ -97,7 +98,7 @@ export default function Calendar({ userInfo, life }) {
 }
 
 
-function Unit({ id, color, title }) {
+function Unit({ id, color, age, title }) {
   return (
       <span
         id={id}
@@ -105,7 +106,7 @@ function Unit({ id, color, title }) {
         style={{color: color}}
       >
         {'\u25a0'}
-        <span className='Tooltip'>{title}{id}</span>
+        <span className='Tooltip'>{title} {id} {age}</span>
       </span>
   );
 }
