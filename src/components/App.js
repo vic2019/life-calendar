@@ -9,15 +9,15 @@ const defaultLife = {
   lifespan: 0
 };
 
-const test = {
-  DOB: dayjs('1990-04-16'),
-  lifespan: 100
-};
+// const test = {
+//   DOB: dayjs('1990-04-16'),
+//   lifespan: 100
+// };
 
 
 export default function App() {
   const [userInfo, setUserInfo] = useState({ name: '', gender: '' });
-  const [life, setLife] = useState(test);
+  const [life, setLife] = useState(defaultLife);
 
   return (    
     <div className='App'>

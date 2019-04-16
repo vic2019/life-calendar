@@ -162,7 +162,7 @@ code {
 
 .Tooltip {
   visibility: hidden;
-  transition-delay: 0.7s;
+  transition-delay: 0.6s;
   background-color: #383838;
   min-width: 8em;
   padding: 7px;
