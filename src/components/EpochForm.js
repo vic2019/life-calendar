@@ -18,7 +18,7 @@ class EpochForm extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
-    this.descriptionRef = React.createRef();
+    this.noteRef = React.createRef();
   }
 
   focusNext = (e) => {
@@ -35,8 +35,8 @@ class EpochForm extends React.Component {
     const { visible, onCancel, onCreate, onDelete, form, 
       selectedEpoch, modalTitle } = this.props;
     const { getFieldDecorator } = form;
-    const { title, description, color } = selectedEpoch.current?
-      selectedEpoch.current: {title: '', description: '', color: ''};
+    const { title, note, color } = selectedEpoch.current?
+      selectedEpoch.current: {title: '', note: '', color: ''};
 
 
     return (
@@ -62,13 +62,13 @@ class EpochForm extends React.Component {
           />
         )}
         </Form.Item>
-        <Form.Item name='description'>
-        {getFieldDecorator( 'description', 
-        {validateTrigger: 'onSubmit', initialValue: description})(
+        <Form.Item name='note'>
+        {getFieldDecorator( 'note', 
+        {validateTrigger: 'onSubmit', initialValue: note})(
           <Input.TextArea
             autosize={{ minRows: 5 }}
-            placeholder='Description' 
-            ref={this.descriptionRef}
+            placeholder='Note' 
+            ref={this.noteRef}
           />
         )}
         </Form.Item>
@@ -178,7 +178,7 @@ export default function InputEpoch(props) {
       
       let newEpoch = {
         title: values.title.trim(),
-        description: (values.description || '').trimRight(),
+        note: (values.note || '').trimRight(),
         color: values.color,
         start: selectedPeriod.current.start,
         end: selectedPeriod.current.end,

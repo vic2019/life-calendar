@@ -73,13 +73,6 @@ code {
   color: #555555;
 }
 
-.UserInfoRowWrapper {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  margin-left: 16px;
-}
-
 .UserInfoForm {
   display: flex;
   flex-flow: column wrap;
@@ -87,84 +80,104 @@ code {
   padding-left: 16px;
 }
 
-.Calendar {
+.UserInfoRowWrapper {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  margin-left: 16px;
+}
+
+.CalendarBackground {
   background-color: rgba(255, 255, 255, 0.92);
   min-height: 280px;
-  padding: 40px 20px 50px 22px;
   margin-top: 50px;
   margin-bottom: 70px;
   border-radius: 6px;
+}
+
+.TileContainer {
+  padding: 40px 20px 50px 22px;
+  background-color: rgba(0,0,0,0);
   display: flex;
   flex-flow: row wrap;
   justify-content: flex-start;
+  align-items: baseline;
+  overflow: wrap;
   font-size: 1.2em;
   line-height: 0.9;
 }
 
 
 @media only screen and (max-width: 768px) {
-  .Calendar {
+  .TileContainer {
     padding: 40px 20px 50px 23px;
   }
 }
 
 @media only screen and (max-width: 425px) {
-  .Calendar {
+  .TileContainer {
     padding: 40px 15px 50px 17px;
+  }
+  
+  .CalendarBackground {
+    min-height: 305px;
+    margin-top: 45px;
+    margin-bottom: 35px;
+  }
+
+  .UserInfo {
+    margin-top: 0px;
   }
 }
 
 @media only screen and (max-width: 375px) {
-  .Calendar {
+  .TileContainer {
     padding: 30px 10px 35px 10px;
     background-size: auto 100vh;
   }
 }
 
 @media only screen and (max-width: 320px) {
-  .Calendar {
+  .TileContainer {
     padding: 30px 8px 35px 8px;
     background-size: auto 100vh;
   }
 }
 
-.Unit {
-  transition: 0.12s;
+.Tile {
+  transition: transform 0.12s;
   font-size: 1.1em;
   margin-left: 1px;
 }
 
-.Unit:hover {
-  transform: scale(1.4, 1.4) translate(0px, -3px);
+.Tile:hover {
+  transform: scale(1.3, 1.3) translate(0px, -3px);
   color: red !important;
 }
 
-.Unit::selection {
+.Tile::selection {
   background-color: rgba(0,0,0,0);
   color: red;
 }
 
 .Tooltip {
   visibility: hidden;
+  transition-delay: 0.7s;
   background-color: #383838;
   min-width: 8em;
   padding: 7px;
   border-radius: 3px;
   position: absolute;
-  z-index: 2;
   bottom: 115%;
   right: 105%;
-  opacity: 0;
-  transition: 0.2s;
-  transition-delay: 0.5s;
   text-align: center;
   font-size: 0.6em;
   line-height: 1.2em;
   text-shadow: none;
+  color: white;
+  opacity: 0.9;
 }
 
-.Unit:hover .Tooltip {
-  visibility: visible;
-  opacity: 0.9;
-  color: white;
+.Tile:hover .Tooltip {
+  visibility: visible
 }

@@ -4,7 +4,7 @@ import dayjs from 'dayjs';
 import uuidv4 from 'uuid/v4';
 
 
-const WrappedUnit = React.memo(Unit);
+const WrappedTile = React.memo(Tile);
 
 
 export default function Calendar({ userInfo, life }) {
@@ -13,7 +13,7 @@ export default function Calendar({ userInfo, life }) {
   const selectedPeriod = useRef(undefined);
 
   const [epochs, setEpochs] = useState(setInitialEpochs(life));
-  const [units, setUnits] = useState(
+  const [tiles, setTiles] = useState(
     Array(life.lifespan * 26).fill().map( (_, index) => {
       return life.DOB.startOf('week').add(index * 2, 'week')
     })
@@ -41,7 +41,7 @@ export default function Calendar({ userInfo, life }) {
   }
   
 
-  function processUnit(item) {
+  function processTile(item, index) {
     const id = item.format('YYYY-MM-DD');
     const age = 'Age ' + Math.floor(item.diff(life.DOB, 'year'));
     
@@ -57,7 +57,7 @@ export default function Calendar({ userInfo, life }) {
     const title = assignedEpoch? assignedEpoch.title + ' ' : '';
 
     return (
-      <WrappedUnit key={id} id={id} color={color} age={age} title={title}/>
+      <WrappedTile key={id} id={id} color={color} age={age} title={title}/>
     );
   }
 
@@ -65,13 +65,13 @@ export default function Calendar({ userInfo, life }) {
   useEffect( () => {
     if (!prevLife.current.DOB.isSame(life.DOB)) {
       setEpochs(setInitialEpochs(life));
-      setUnits(Array(life.lifespan * 26).fill().map( (_, index) => {
+      setTiles(Array(life.lifespan * 26).fill().map( (_, index) => {
         return life.DOB.startOf('week').add(index * 2, 'week');
       }));
       prevLife.current = life;
 
     } else if (prevLife.current.lifespan !== life.lifespan) {
-      setUnits(Array(life.lifespan * 26).fill().map( (_, index) => {
+      setTiles(Array(life.lifespan * 26).fill().map( (_, index) => {
         return life.DOB.startOf('week').add(index * 2, 'week');
       }));
       prevLife.current = life;
@@ -90,23 +90,25 @@ export default function Calendar({ userInfo, life }) {
         selectedEpoch={selectedEpoch}
         selectedPeriod={selectedPeriod}
         />
-      <div className='Calendar' onMouseUp={handleMouseUp}>
-        {units.length === 1 ? null: units.map(processUnit)}
+      <div className='CalendarBackground'>
+        <div className='TileContainer' onMouseUp={handleMouseUp}>
+          {tiles.length === 1 ? null: tiles.map(processTile)}
+        </div>
       </div>
     </div>
   );
 }
 
 
-function Unit({ id, color, age, title }) {
+function Tile({ id, color, age, title }) {
   return (
       <span
         id={id}
-        className='Unit' 
+        className='Tile' 
         style={{color: color}}
       >
         {'\u25a0'}
-        <span className='Tooltip'>{title} {id} {age}</span>
+        <span className='Tooltip'>{title}{title? <br/>:''}{id}<br/>{age}</span>
       </span>
   );
 }
