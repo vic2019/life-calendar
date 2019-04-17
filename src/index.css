@@ -19,27 +19,6 @@ code {
   min-height: 100vh;
 }
 
-/* .MainContainer > .Header {
-  background-color:  #34495e;
-  position: fixed;
-  height: 10vh;
-  width: 100vw;
-  z-index: 1;
-} */
-
-
-/* .MainContainer > .Row {
-  position: relative;
-  top: 10vh;
-  display: flex;
-  flex-direction: row;
-  min-height: 90vh;
-  width: 100vw;
-  align-items: stretch;
-  justify-content: center;
-  background-color: #5d6d7e;
-} */
-
 
 .MainContainer {
   position: absolute;
@@ -62,6 +41,14 @@ code {
   z-index: 1;
 }
 
+.loginButton {
+  position: fixed;
+  background-color: red;
+  bottom: 2vw;
+  right: 2vw;
+
+}
+
 .UserInfo {
   background-color: rgba(256, 256, 256, 0.6);
   padding-top: 20px;
@@ -77,13 +64,11 @@ code {
   display: flex;
   flex-flow: column wrap;
   align-items: center;
+  text-align: left;
   padding-left: 16px;
 }
 
 .UserInfoRowWrapper {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
   margin-left: 16px;
 }
 

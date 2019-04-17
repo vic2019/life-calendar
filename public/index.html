@@ -2,20 +2,38 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <!-- <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" /> -->
+    <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1"
     />
     <meta name="theme-color" content="#000000" />
-
-    <!-- <link rel="manifest" href="%PUBLIC_URL%/manifest.json" /> -->
-
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <title>Life Calendar</title>
   </head>
   <body>
-  
-    <div id="root"></div>
+  <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '707152956368416',
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v3.2'
+        });
+          
+        let fbInitEvent = new Event('FBObjectReady');
+        document.dispatchEvent(fbInitEvent);
+      };
+    
+      (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
 
+    <div id="root"></div>
   </body>
 </html>
