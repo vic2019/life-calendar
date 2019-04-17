@@ -23,7 +23,7 @@ export default function Calendar({ userInfo, life }) {
   
   function handleMouseUp() {
     const selection = window.getSelection();
-    if (!selection) return;
+    if (!selection || !selection.anchorNode.parentNode.id) return;
     
     let anchor = dayjs(selection.anchorNode.parentNode.id);
     let focus = dayjs(selection.focusNode.parentNode.id);
@@ -41,7 +41,7 @@ export default function Calendar({ userInfo, life }) {
   }
   
 
-  function processTile(item, index) {
+  function processTile(item) {
     const id = item.format('YYYY-MM-DD');
     const age = 'Age ' + Math.floor(item.diff(life.DOB, 'year'));
     

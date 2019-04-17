@@ -145,7 +145,7 @@ code {
 }
 
 .Tile {
-  transition: transform 0.12s;
+  /* transition: transform 0.12s; */
   font-size: 1.1em;
   margin-left: 1px;
 }
@@ -162,7 +162,7 @@ code {
 
 .Tooltip {
   visibility: hidden;
-  transition-delay: 0.6s;
+  transition-delay: 0.5s;
   background-color: #383838;
   min-width: 8em;
   padding: 7px;

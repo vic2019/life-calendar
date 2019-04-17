@@ -18,13 +18,8 @@ class EpochForm extends React.Component {
   constructor(props) {
     super(props);
     this.props = props;
-    this.noteRef = React.createRef();
   }
 
-  focusNext = (e) => {
-    e.preventDefault();
-    this.field.current.focus();
-  }
 
   handleSelectColor = (value) => {
     this.props.form.setFieldsValue({color: value});
@@ -57,8 +52,7 @@ class EpochForm extends React.Component {
               })(
           <Input
             placeholder='Title'
-            style={{ width: '24em' }} 
-            onPressEnter={this.focusNext}
+            style={{ width: '80%' }} 
           />
         )}
         </Form.Item>
@@ -68,7 +62,6 @@ class EpochForm extends React.Component {
           <Input.TextArea
             autosize={{ minRows: 5 }}
             placeholder='Note' 
-            ref={this.noteRef}
           />
         )}
         </Form.Item>

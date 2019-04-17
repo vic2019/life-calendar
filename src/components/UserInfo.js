@@ -12,10 +12,6 @@ class BasicInfo extends React.Component {
     this.setLife = props.setLife;
 
     this.handleSubmit = this.handleSubmit.bind(this);
-
-    this.gender = React.createRef();
-    this.DOB = React.createRef();
-    this.lifespan = React.createRef();
   }
 
   handleSubmit(e) {
@@ -63,7 +59,6 @@ class BasicInfo extends React.Component {
               })(
                 <Input 
                   placeholder='Name' 
-                  onPressEnter={()=>this.gender.current.focus()} 
                   style={inputStyle}
                 />
               )}
@@ -76,14 +71,7 @@ class BasicInfo extends React.Component {
               })(
                 <Select
                   placeholder='Gender' 
-                  //placehold would disappear if assign 'value'
                   style={inputStyle}
-                  onChange={()=>this.DOB.current.focus()}
-                  onPressEnter={() => {
-                    if (this.gender.current.value === undefined) return;
-                    this.DOB.current.focus();
-                  }}
-                  ref={this.gender} 
                 >
                   <Option value='male'>Male</Option>
                   <Option value='female'>Female</Option>
@@ -103,10 +91,6 @@ class BasicInfo extends React.Component {
                   placeholder='Date of Birth (mm/dd/year)'
                   style={inputStyle}
                   format={'MM/DD/YYYY'}
-                  onOpenChange={()=> {
-                    setTimeout(()=>this.lifespan.current.focus(), 0);
-                  }}
-                  ref={this.DOB}
                 />
               )}
             </Form.Item>
@@ -129,8 +113,7 @@ class BasicInfo extends React.Component {
                   <Input
                     placeholder='Expected Lifespan (years)'
                     style={inputStyle}                    
-                    ref={this.lifespan}
-                    onPressEnter={this.handleSubmit}
+
                   />
                 )}
               </Tooltip>
@@ -138,7 +121,8 @@ class BasicInfo extends React.Component {
           </div>
           <div className='UserInfoRowWrapper'>
             <Form.Item>
-              <Button type='primary' style={buttonStyle} onClick={this.handleSubmit}>
+              <Button type='primary' style={buttonStyle} 
+                onClick={this.handleSubmit}>
                 Create My Calendar!
               </Button>
             </Form.Item>
