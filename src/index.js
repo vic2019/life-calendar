@@ -1,16 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
-import "./index.css";
 import "antd/dist/antd.css";
+import "./index.css";
 
 
 ReactDOM.render( 
   <div className='MainContainer'>
-    {/* <div className='Header'/> */}
-    <div className='Row'>
-      <App/>
-    </div>
+    <App/>
   </div>,
   document.getElementById("root")
   );

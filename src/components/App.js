@@ -22,7 +22,7 @@ export default function App() {
   return (    
     <div className='App'>
       <UserInfo setUserInfo={setUserInfo} setLife={setLife}/>
-      <Calendar life={life} userInfo={userInfo}/>
+      <Calendar life={life}/>
     </div>
   );
 };

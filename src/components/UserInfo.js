@@ -1,11 +1,15 @@
 import React from 'react';
-import { Form, Input, Select, DatePicker, Button, Tooltip } from 'antd';
+import { Form, Input, Select, DatePicker, Button, Tooltip, message } 
+  from 'antd';
 import dayjs from 'dayjs';
-
 
 const { Option } = Select;
 
-class BasicInfo extends React.Component {
+if (window.screen.width < 1000) {
+  message.info("For a better user experience, please consider visiting this site on a computer :)", 9);
+}
+
+class BasicInfo extends React.PureComponent {
   constructor(props) {
     super(props);
     this.setUserInfo = props.setUserInfo;

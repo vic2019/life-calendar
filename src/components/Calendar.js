@@ -7,7 +7,7 @@ import uuidv4 from 'uuid/v4';
 const WrappedTile = React.memo(Tile);
 
 
-export default function Calendar({ userInfo, life }) {
+export default function Calendar({ life }) {
   const prevLife = useRef(life);
   const selectedEpoch = useRef(undefined);
   const selectedPeriod = useRef(undefined);
@@ -17,7 +17,7 @@ export default function Calendar({ userInfo, life }) {
     Array(life.lifespan * 26).fill().map( (_, index) => {
       return life.DOB.startOf('week').add(index * 2, 'week')
     })
-    );
+  );
   const [modal, setModal] = useState(false);
     
   
