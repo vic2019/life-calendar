@@ -41,14 +41,17 @@ code {
   z-index: 1;
 }
 
-.loginButton {
+.ActionButtons {
   position: fixed;
-  background-color: red;
-  bottom: 2vw;
-  right: 2vw;
-
+  bottom: 30px;
+  right: 30px;
 }
 
+.LoginButton {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+}
 .UserInfo {
   background-color: rgba(256, 256, 256, 0.6);
   padding-top: 20px;
