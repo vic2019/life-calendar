@@ -5,6 +5,7 @@ import Calendar from './components/Calendar';
 import LoginButton from './components/LoginButton';
 import ActionButtons from './components/ActionButtons';
 import { message } from 'antd';
+import axios from 'axios';
 import dayjs from 'dayjs';
 import "antd/dist/antd.css";
 import "./index.css";
@@ -26,6 +27,7 @@ if (window.screen.width < 1000) {
   message.info("For a better user experience, please consider visiting this site on a computer :)", 9);
 }
 
+const url = 'https://eo97n47fz6.execute-api.us-west-1.amazonaws.com/default/updateLifeCalendar';
 
 function Index() {
   const [userInfo, setUserInfo] = useState({ name: '', gender: '' });
@@ -38,44 +40,109 @@ function Index() {
 
   document.addEventListener('FBObjectReady', () => setFB(window.FB));
 
-  function handleFbLoginStatus(res) {
+  function handleFbLogin(res) {
     if (res.status === 'connected') {
-      const id = res.authResponse.userID;
-      FB.api(
-        '/'+id,
-        'GET',
-        {"fields":"id,first_name,middle_name,last_name"},
-        res => {
-          message.success(
-            <span>
-              {`Logged in as ${res.first_name} ${res.last_name}`}<br/><br/>
-              <img 
-                src={`http://graph.facebook.com/${res.id}/picture?type=normal`}
-                alt=''
-              />
-            </span>, 
-            4
-          );
-          setUser({
-            id: res.id,
-            firstName: res.first_name,
-            middleName: res.middle_name,
-            lastName: res.last_name,
+      new Promise( (resolve, reject) => {
+        FB.api(
+          '/'+res.authResponse.userID,
+          'GET',
+          {"fields":"id,first_name,middle_name,last_name"},
+          res => resolve(res)
+        );  
+      })
+      .then( res => {
+        return { 
+          old: getData(res.id).then(data => DataTransfer),
+          new: res
+        };
+      })
+      .then( res => {
+        if (!res.old.UserID) {
+          setUser(res.new);
+          postData({
+            UserID: res.new.id,
+            loginStatus: true,
+            FbInfo: {
+              "firstName": res.new.first_name,
+              "middleName": res.new.middle_name,
+              "lastName": res.new.last_name
+            }
           });
+        } else {
+          if (res.old.loginStatus) {
+            setUser(res.new);
+            loginNotice(res.new);
+          } else {
+            updateData({
+              Key: { "UserID": res.new.id },
+              UpdateExpression: "set #f = :f",
+              ExpressionAttributeNames: {
+                "#f": "FbInfo",
+              },
+              ExpressionAttributeValues: {
+                ":f": {
+                  "firstName": res.new.first_name,
+                  "middleName": res.new.middle_name,
+                  "lastName": res.new.last_name     
+                }
+              }
+            });
+          }
+
         }
-      );     
+      });
+    
     } else {
       setUser(undefined);
     }
-  };
+  }
   
+
   function handleLoginBtnClick() {
-    FB.login(handleFbLoginStatus);
-  };
+    FB.login(handleFbLogin);
+  }
   
-  function saveData() {
-    
-  };
+  function loginNotice(user) {
+    message.success(
+      <span>
+        {`Logged in as ${user.first_name} ${user.last_name}`}<br/><br/>
+        <img 
+          src={`http://graph.facebook.com/${user.id}/picture?type=normal`}
+          alt=''
+        />
+      </span>, 
+      4
+    );
+  }
+
+  function getData(id) {
+    return axios.get(url + `?UserID=${id}`, {
+      headers: { 
+        "x-api-key": "l6PXzRC1LZ22bNW0VoQrg9XkdPMO6h51120XwpO4",
+        "Content-Type": "application/json"
+      }
+    });
+  }
+
+  function updateData(params) {
+    axios.put(url, {
+      headers: { 
+        "x-api-key": "l6PXzRC1LZ22bNW0VoQrg9XkdPMO6h51120XwpO4",
+        "Content-Type": "application/json"
+      },
+      body: params
+    });
+  }
+
+  function postData(data) {
+    axios.post(url, {
+      headers: { 
+        "x-api-key": "l6PXzRC1LZ22bNW0VoQrg9XkdPMO6h51120XwpO4",
+        "Content-Type": "application/json"
+      },
+      body: data
+    });
+  }
 
   function logout() {
     setUser(undefined);
@@ -88,7 +155,7 @@ function Index() {
 
   useEffect(() => {
     if(!FB) return;
-    FB.getLoginStatus(handleFbLoginStatus);
+    FB.getLoginStatus(handleFbLogin);
   }, [FB]);
 
   return (
@@ -98,7 +165,7 @@ function Index() {
         <Calendar life={life} epochs={epochs} setEpochs={setEpochs}/>
         {life.lifespan? user? 
           <ActionButtons
-            saveData={saveData}
+            saveData={putData}
             logout={logout}
             deleteData={deleteData}
             name={user.firstName}
