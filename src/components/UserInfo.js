@@ -9,7 +9,7 @@ const { Option } = Select;
 class BasicInfo extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.setUserInfo = props.setUserInfo;
+    this.setBasicInfo = props.setBasicInfo;
     this.setLife = props.setLife;
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,7 +22,7 @@ class BasicInfo extends React.PureComponent {
         return;
       }
 
-      this.setUserInfo({
+      this.setBasicInfo({
         name: values.name.trim(),
         gender: values.gender
       });

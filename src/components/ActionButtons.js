@@ -6,7 +6,7 @@ export default function ActionButtons({ saveData, logout, deleteData, name }) {
     <Button.Group size='small' className='ActionButtons'>
       <Button type='primary' onClick={saveData}>Save</Button>
       <Button type='primary' onClick={logout}>
-        {name? `Logout as ${name}`: 'Logout'}
+        {name? `Log out as ${name}`: 'Logout'}
       </Button>
       <Button type='danger' onClick={deleteData}>Delete</Button>
     </Button.Group>
