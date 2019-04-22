@@ -1,5 +1,5 @@
 import React from 'react';
-import { Form, Input, Select, DatePicker, Button, Tooltip } 
+import { Form, Input, Select, DatePicker, Button } 
   from 'antd';
 import dayjs from 'dayjs';
 
@@ -30,7 +30,7 @@ class BasicInfo extends React.PureComponent {
       const lifespan = parseInt(values.lifespan);
       this.setLife({
         DOB: dayjs(values.DOB.format()),
-        lifespan: lifespan <= 100 ? lifespan: 100,
+        lifespan: lifespan < 101 ? lifespan: 100,
       });
     });
   }
@@ -96,28 +96,22 @@ class BasicInfo extends React.PureComponent {
               )}
             </Form.Item>
             <Form.Item>
-              <Tooltip
-                trigger={['focus']}
-                title='Suggestion: Try 78 for the average American.'
-                placement="topLeft"
-              >
-                {getFieldDecorator('lifespan', {
-                  rules: [{
-                    transform: (value) => {
-                      value = Math.floor(value);
-                      return value > 0 ? value : NaN;
-                    },
-                    type: 'number',
-                    message: 'Please enter a positive number'
-                  }]
-                })(
-                  <Input
-                    placeholder='Expected Lifespan (years)'
-                    style={inputStyle}                    
+              {getFieldDecorator('lifespan', {
+                rules: [{
+                  transform: (value) => {
+                    value = Math.floor(value);
+                    return value > 0 ? value : NaN;
+                  },
+                  type: 'number',
+                  message: 'Please enter a positive number'
+                }]
+              })(
+                <Input
+                  placeholder='Expected Lifespan (years)'
+                  style={inputStyle}                    
 
-                  />
-                )}
-              </Tooltip>
+                />
+              )}
             </Form.Item>
           </div>
           <div className='UserInfoRowWrapper'>
