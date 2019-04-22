@@ -35,7 +35,7 @@ if (window.screen.width < 1000) {
 function Index() {
   const [basicInfo, setBasicInfo] = useState({ name: '', gender: '' });
   const [life, setLife] = useState(defaultLife);
-  const [epochs, setEpochs] = useState(undefined);
+  const [epochs, setEpochs] = useState([]);
   const [user, setUser] = useState(undefined);
   const [FB, setFB] = useState(undefined);
 
@@ -60,8 +60,7 @@ function Index() {
           const dbUser = values[1].data.Item;
           
           if (!fbUser.id) {
-            handleLoginBtnClick();
-            return;
+            return setTimeout(() => FB.login(handleFbLogin(true)), 0);
           }
                     
           if (dbUser && (dbUser.loginStatus || loginButtonClick) ) {
@@ -82,25 +81,24 @@ function Index() {
               }
             });
 
-            loadData(dbUser);
-            
           } else if (!dbUser && loginButtonClick) {
             createUser({
               UserID: fbUser.id,
               FbInfo: {
                 "firstName": fbUser.first_name,
-                  "middleName": fbUser.middle_name,
-                  "lastName": fbUser.last_name
-                },
+                "middleName": fbUser.middle_name,
+                "lastName": fbUser.last_name
+              },
               loginStatus: true
             }); 
-
+            
           } else {
             setUser(undefined);
             return;
           }
           
           setUser(fbUser);
+          loadData(dbUser);
           loginNotice(fbUser);
         });
       } else {
@@ -116,7 +114,7 @@ function Index() {
   function loginNotice(user) {
     message.success(
       <span>
-        {`Logged in as ${user.first_name} ${user.last_name}`}<br/><br/>
+        {`Logged in as ${user.first_name} ${user.last_name}`}<br/>
         <img 
           src={`http://graph.facebook.com/${user.id}/picture?type=large`}
           alt=''
@@ -150,7 +148,12 @@ function Index() {
 
   function deleteUser() {
     setUser(undefined);
-    return axios.delete(url + `?UserID=${user.id}`);
+    setLife(defaultLife);
+    setBasicInfo({ name: '', gender: ''});
+    setEpochs([]);  
+    return axios.delete(url + `?UserID=${user.id}`).then( (_, err) => {
+      if (!err) message.success('User account deleted', 3);
+    })
   }
 
   function logout() {
@@ -163,14 +166,16 @@ function Index() {
       ExpressionAttributeValues: {
         ":a": false
       }
+    }).then( (_, err) => {
+      if (!err) message.success("Logout success!", 3);
     })
     setUser(undefined);
-    message.success("Logout success!", 3);
+    setLife(defaultLife);
+    setBasicInfo({ name: '', gender: ''});
+    setEpochs([]);
   }
 
   function saveData() {
-    alert(`${life.DOB} ${basicInfo.name} ${epochs[epochs.length - 1].title}`);
-    
     updateUser({
       Key: { "UserID": user.id },
       UpdateExpression: "set #a = :a, #b = :b, #c = :c, #d = :d",
@@ -186,33 +191,40 @@ function Index() {
         ":c": basicInfo.name,
         ":d": basicInfo.gender
       }
-    })
+    }).then( (_, err) => {
+      if (!err) message.success('Saved!', 3);
+    });
   }
 
   function loadData(dbUser) {
-    if(!dbUser || !user || !user.id) return;
+    if(!dbUser) return;
 
-    setLife({
-      DOB: dayjs(dbUser.life.DOB),
-      lifespan: dbUser.life.lifespan
-    });
+    if (dbUser.life) {
+      setLife({
+        DOB: dayjs(dbUser.life.DOB),
+        lifespan: dbUser.life.lifespan
+      });
+    }
 
-    setEpochs(...dbUser.epochs.map( item => {
-      return {
-        uuid: item.uuid,
-        title: item.title,
-        note: item.note || '',
-        color: item.color,
-        start: dayjs(item.start),
-        end: dayjs(item.end)
-      };
-    }))
+    if (dbUser.epochs) {
+      setEpochs([...dbUser.epochs.map( item => {
+        return {
+          uuid: item.uuid,
+          title: item.title,
+          note: item.note || '',
+          color: item.color,
+          start: dayjs(item.start),
+          end: dayjs(item.end)
+        };
+      })])
+    }
 
-    setBasicInfo({
-      name: dbUser.basicInfo.name,
-      gender: dbUser.basicInfo.gender
-    });
-
+    if (dbUser.name && dbUser.gender) {
+      setBasicInfo({
+        name: dbUser.name,
+        gender: dbUser.gender
+      });
+    }
   }
 
   useEffect(() => {
