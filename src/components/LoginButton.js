@@ -9,7 +9,7 @@ export default function LoginButton({ handleClick }) {
       type='primary'
       onClick={handleClick}
     >
-      <Icon type="facebook" theme="filled" />Log In & Save
+      <Icon type="facebook" theme="filled" />Log In
     </Button>
   );
 }
