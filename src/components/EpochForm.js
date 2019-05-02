@@ -170,12 +170,12 @@ export default function InputEpoch(props) {
       }
       
       let newEpoch = {
-        title: values.title.trim(),
-        note: (values.note || '').trimRight(),
-        color: values.color,
-        start: selectedPeriod.current.start,
-        end: selectedPeriod.current.end,
-        uuid: selectedEpoch.current?
+        "title": values.title.trim(),
+        "note": (values.note || '').trimRight(),
+        "color": values.color,
+        "start": selectedPeriod.current.start,
+        "end": selectedPeriod.current.end,
+        "uuid": selectedEpoch.current?
         selectedEpoch.current.uuid: uuidv4()
       }
       
