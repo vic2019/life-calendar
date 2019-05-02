@@ -4,11 +4,29 @@ import UserInfo from './components/UserInfo';
 import Calendar from './components/Calendar';
 import LoginButton from './components/LoginButton';
 import ActionButtons from './components/ActionButtons';
-import { User, auth, parseHashParams } from './actions/actions';
+import { User, auth } from './actions/actions';
 import { message } from 'antd';
 import dayjs from 'dayjs';
 import "antd/dist/antd.css";
 import "./index.css";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 if (window.screen.width < 1000) {
@@ -32,25 +50,36 @@ function Index() {
   const [epochs, setEpochs] = useState([]);
   const [user, setUser] = useState(undefined);
   const FB = useRef(undefined);
-  
+
+
   document.addEventListener('FBObjectReady', () => FB.current = window.FB);
   window.addEventListener('load', initUser);
     
+
+
   function initUser() {
-    let idToken;
+    let currentUser;
     const hash = window.location.hash;
     if (hash) {
-      idToken = parseHashParams(hash);
-      if (idToken) window.localStorage.clear();
+      currentUser = new User(hash);
+  
     } else {
-      idToken = window.localStorage.getItem('token');
+      let idToken = window.localStorage.getItem('idToken');
+      let accessToken = window.localStorage.getItem('accessToken');
+      if (idToken && accessToken) {
+        currentUser = new User('', idToken, accessToken);
+      }
     }
 
-    if (!idToken) return;
+    if (!currentUser) {
+      window.localStorage.clear();
+      return;
+    }
 
     try {
-      setUser(new User(idToken));
-      window.localStorage.setItem('token', idToken);
+      setUser(currentUser);
+      window.localStorage.setItem('idToken', currentUser.idToken);
+      window.localStorage.setItem('accessToken', currentUser.accessToken);
 
     } catch(err) {
       if (!err) alert('login success');
@@ -63,25 +92,27 @@ function Index() {
       if (!saved) return;
 
       setBasicInfo({
-        name: saved.name,
-        gender: saved.gender
+        name: saved.name || undefined,
+        gender: saved.gender || undefined
       });
 
       setLife({
-        DOB: dayjs(saved.DOB),
-        lifespan: saved.lifespan
+        DOB: dayjs(saved.DOB || ''),
+        lifespan: saved.lifespan || 0
       });
       
-      setEpochs([...saved.epochs.map( item => {
-        return {
-          uuid: item.uuid,
-          title: item.title,
-          note: item.note || '',
-          color: item.color,
-          start: dayjs(item.start),
-          end: dayjs(item.end)
-        };
-      })]);
+      setEpochs(saved.epochs? 
+        [...saved.epochs.map( item => {
+          return {
+            uuid: item.uuid,
+            title: item.title,
+            note: item.note || '',
+            color: item.color,
+            start: dayjs(item.start),
+            end: dayjs(item.end)
+          };
+        })] : []
+      );
     })
   }
 
@@ -103,7 +134,6 @@ function Index() {
     if (!user) return;
 
     importUserData();
-    alert(user.fbToken)
 
     // if(FB.current && user.fbId) {
     //   FB.current.api(
@@ -209,7 +239,7 @@ function Index() {
   }
 
   const save = () => {
-    if (basicInfo.name === undefined) {
+    if (life.lifespan === 0) {
       message.info('Nothing new to save.', 3);
       return;
     }
@@ -221,7 +251,11 @@ function Index() {
       "lifespan": life.lifespan,
       "epochs": epochs
     }).then( (_, err) => {
-      if (!err) message.success('Saved!', 3);
+      if (err) {
+        alert(err);
+      } else {
+        message.success('Saved!', 3);
+      }
     });
   }
 
