@@ -171,7 +171,7 @@ export default function InputEpoch(props) {
       
       let newEpoch = {
         "title": values.title.trim(),
-        "note": (values.note || '').trimRight(),
+        "note": (values.note || '').trimRight() || ' ',
         "color": values.color,
         "start": selectedPeriod.current.start,
         "end": selectedPeriod.current.end,

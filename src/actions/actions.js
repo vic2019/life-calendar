@@ -5,45 +5,32 @@ import { AUTH_DATA, DB_URI, SORT_KEY } from '../config/config';
 
 export const auth = new CognitoAuth(AUTH_DATA);
 
-export const User = (hash, savedIdToken, savedAccessToken) => {
-  const idToken = savedIdToken? savedIdToken: parseHashParams(hash, 'id_token');
+export const User = (hash) => {
+  const idToken = parseHashParams(hash, 'id_token');
   if (!idToken) return undefined;
 
-  const accessToken = savedAccessToken? 
-    savedAccessToken: parseHashParams(hash, 'access_token');
-  const id = JSON.parse(window.atob(idToken.split('.')[1]))['cognito:username'];
-  const fbId = id.includes('Facebook')? id.slice(9, id.length): undefined;
+  const accessToken = parseHashParams(hash, 'access_token');
+  const payload = JSON.parse(window.atob(idToken.split('.')[1]));
+  const id = payload['cognito:username'];
+  const fbId = payload.identities? payload.identities[0].userId: undefined;
+  const fbName = payload.name;
+  const fbToken = payload.profile;
   const credential = { "Authorization": idToken };
 
   const get = () => {
     return axios.get(DB_URI + `?${SORT_KEY}=${id}`, { headers: credential });
   };
 
-  const update = (params) => {
-    const keys = Object.keys(params);
-    let UpdateExpression = 'set';
-    const ExpressionAttributeNames = {};
-    const ExpressionAttributeValues = {};
-    for (let key of keys) {
-      UpdateExpression += ` #${key} = :${key},`;
-      ExpressionAttributeNames['#'+key] = key;
-      ExpressionAttributeValues[':'+key] = params[key];
-    }
-    UpdateExpression = UpdateExpression.slice(0, UpdateExpression.length - 1);
-    alert('oh');
-
+  const save = (params) => {
     return axios.put(
       DB_URI, 
-      {
-        Key: { [SORT_KEY]: id },
-        UpdateExpression,
-        ExpressionAttributeNames,
-        ExpressionAttributeValues
-      },
-      { headers: { 
-        "content-type": "application/json", 
-        ...credential
-      } }
+      params,
+      { 
+        headers: { 
+          "content-type": "application/json", 
+          ...credential
+        } 
+      }
     );
   };
   
@@ -51,19 +38,16 @@ export const User = (hash, savedIdToken, savedAccessToken) => {
     return axios.delete(DB_URI + `?${SORT_KEY}=${id}`, { headers: credential });
   };
 
-  // const showId = () => {
-  //   window.alert(id);
-  // }
-
   return {
     idToken,
     accessToken,
     id,
     fbId,
+    fbName,
+    fbToken,
     get,
-    update,
-    deleteUser,
-    // showId
+    save,
+    deleteUser
   };
 };
 
