@@ -13,7 +13,7 @@ import "./index.css";
 
 
 if (window.screen.width < 1000) {
-  message.info("For better user experience, please consider visiting this site on a computer :)", 4);
+  message.info("For a better user experience, please visit this site on a computer :)", 7);
 }
 
 const initialLife = {
@@ -96,7 +96,7 @@ function Index() {
     }).then(() => {
       setTimeout(() => loginNotice(user.fbName), 500);
     }).catch( err => {
-      console.log(`Error: ${err}`);
+      // console.log(err);
     });
   }
   
@@ -110,7 +110,10 @@ function Index() {
   };
   
   const deleteUser = () => {
-    user.deleteUser();
+    user.deleteUser().catch(err => {
+      message.error('An error occurred. Your account was not deleted.', 2)
+      // console.log(err);
+    })
     logout();
   }
   
@@ -125,8 +128,8 @@ function Index() {
     }).then( () => {
       message.success('Saved!', 2);
     }).catch( err => {
-      message.error('An error occurred. Your changes are not saved', 2)
-      console.log(err);
+      message.error('An error occurred. Your changes were not saved.', 2)
+      // console.log(err);
     })
   }
   
