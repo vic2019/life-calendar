@@ -14,13 +14,13 @@ code {
   monospace;
 }
 
-.MainContainer {
+.main-container {
   width: 100vw;
   min-height: 100vh;
 }
 
 
-.MainContainer {
+.main-container {
   position: absolute;
   display: flex;
   flex-direction: row;
@@ -35,24 +35,24 @@ code {
   background-repeat: no-repeat;
 }
 
-.App {
+.app {
   justify-content: center;
   width: 800px;
   z-index: 1;
 }
 
-.ActionButtons {
+.action-buttons {
   position: fixed;
   bottom: 30px;
   right: 30px;
 }
 
-.LoginButton {
+.login-button {
   position: fixed;
   bottom: 30px;
   right: 30px;
 }
-.UserInfo {
+.user-info {
   background-color: rgba(256, 256, 256, 0.6);
   padding-top: 20px;
   padding-bottom: 26px;
@@ -63,7 +63,7 @@ code {
   color: #555555;
 }
 
-.UserInfoForm {
+.user-info-form {
   display: flex;
   flex-flow: column wrap;
   align-items: center;
@@ -71,11 +71,11 @@ code {
   padding-left: 16px;
 }
 
-.UserInfoRowWrapper {
+.user-info-row-wrapper {
   margin-left: 16px;
 }
 
-.CalendarBackground {
+.calendar-background {
   background-color: rgba(255, 255, 255, 0.92);
   min-height: 280px;
   margin-top: 50px;
@@ -83,7 +83,7 @@ code {
   border-radius: 6px;
 }
 
-.TileContainer {
+.tile-container {
   padding: 40px 20px 50px 22px;
   background-color: rgba(0,0,0,0);
   display: flex;
@@ -97,58 +97,58 @@ code {
 
 
 @media only screen and (max-width: 768px) {
-  .TileContainer {
+  .tile-container {
     padding: 40px 20px 50px 23px;
   }
 }
 
 @media only screen and (max-width: 425px) {
-  .TileContainer {
+  .tile-container {
     padding: 40px 15px 50px 17px;
   }
   
-  .CalendarBackground {
+  .calendar-background {
     min-height: 305px;
     margin-top: 45px;
     margin-bottom: 35px;
   }
 
-  .UserInfo {
+  .user-info {
     margin-top: 0px;
   }
 }
 
 @media only screen and (max-width: 375px) {
-  .TileContainer {
+  .tile-container {
     padding: 30px 10px 35px 10px;
     background-size: auto 100vh;
   }
 }
 
 @media only screen and (max-width: 320px) {
-  .TileContainer {
+  .tile-container {
     padding: 30px 8px 35px 8px;
     background-size: auto 100vh;
   }
 }
 
-.Tile {
+.tile {
   /* transition: transform 0.12s; */
   font-size: 1.1em;
   margin-left: 1px;
 }
 
-.Tile:hover {
+.tile:hover {
   transform: scale(1.3, 1.3) translate(0px, -3px);
   color: red !important;
 }
 
-.Tile::selection {
+.tile::selection {
   background-color: rgba(0,0,0,0);
   color: red;
 }
 
-.Tooltip {
+.tooltip {
   visibility: hidden;
   transition-delay: 0.5s;
   background-color: #383838;
@@ -166,6 +166,11 @@ code {
   opacity: 0.9;
 }
 
-.Tile:hover .Tooltip {
+.tile:hover .tooltip {
   visibility: visible
+}
+
+.login-notice-pic {
+  padding-top: 1em;
+  padding-bottom: 0.7em;
 }

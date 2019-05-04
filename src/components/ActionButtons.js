@@ -3,7 +3,7 @@ import { Button } from 'antd';
 
 export default function ActionButtons({ save, logout, deleteUser, user }) {
   return (
-    <Button.Group size='small' className='ActionButtons'>
+    <Button.Group size='small' className='action-buttons'>
       <Button type='primary' onClick={save}>Save</Button>
       <Button type='primary' onClick={logout}>
         {user.fbName? `Log out as ${user.fbName.split(' ')[0]}`: 'Log Out'}

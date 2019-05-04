@@ -42,7 +42,7 @@ class EpochForm extends React.Component {
         onCancel={onCancel}
         onOk={onCreate}
       >
-      <Form className='EpochInfo' layout='vertical' hideRequiredMark={true}>
+      <Form className='epoch-info' layout='vertical' hideRequiredMark={true}>
         <Form.Item>
         {getFieldDecorator('title', {
                 rules: [{

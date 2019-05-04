@@ -90,8 +90,8 @@ export default function Calendar({ life, epochs, setEpochs }) {
         selectedEpoch={selectedEpoch}
         selectedPeriod={selectedPeriod}
         />
-      <div className='CalendarBackground'>
-        <div className='TileContainer' onMouseUp={handleMouseUp}>
+      <div className='calendar-background'>
+        <div className='tile-container' onMouseUp={handleMouseUp}>
           {tiles.length === 1 ? null: tiles.map(processTile)}
         </div>
       </div>
@@ -104,11 +104,11 @@ function Tile({ id, color, age, title }) {
   return (
       <span
         id={id}
-        className='Tile' 
+        className='tile' 
         style={{color: color}}
       >
         {'\u25a0'}
-        <span className='Tooltip'>{title}{title? <br/>:''}{id}<br/>{age}</span>
+        <span className='tooltip'>{title}{title? <br/>:''}{id}<br/>{age}</span>
       </span>
   );
 }

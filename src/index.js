@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import UserInfo from './components/UserInfo';
 import Calendar from './components/Calendar';
@@ -12,26 +12,28 @@ import "./index.css";
 
 
 if (window.screen.width < 1000) {
-  message.info("For a better user experience, please consider visiting this site on a computer :)", 5);
+  message.info("For better user experience, please consider visiting this site on a computer :)", 4);
 }
-
 
 const initialLife = {
   DOB: dayjs(),
   lifespan: 0
 };
 
-const testLife = {
-    DOB: dayjs('1995-04-16'),
-    lifespan: 30
-  };
+// const testLife = {
+//     DOB: dayjs('1995-04-16'),
+//     lifespan: 30
+// };
   
 function Index() {
   const [basicInfo, setBasicInfo] = useState({ name: ' ', gender: ' '});
-  const [life, setLife] = useState(testLife);
+  // ^ DynamoDB does not allow empty string
+  const [life, setLife] = useState(initialLife);
   const [epochs, setEpochs] = useState([]);
   const [user, setUser] = useState(undefined);
 
+  // Check if user is logged in on page load. 
+  // Sync log-in status of all tabs through local storage
   window.addEventListener('load', initUser);
   window.addEventListener('storage', () => {
     const loggedIn = window.localStorage.getItem('loggedIn');
@@ -115,10 +117,11 @@ function Index() {
         DOB: life.DOB,
         lifespan: life.lifespan,
         epochs: epochs
-      }).then( res => {
+      }).then( () => {
         message.success('Saved!', 2);
       }).catch( err => {
-        console.log(`Error: ${err}`);
+        message.error('An error occurred. Your changes are not saved', 2)
+        console.log(err);
       })
     }
     
@@ -128,27 +131,28 @@ function Index() {
         {`Logged in as ${fbName}`}
         <br/>
         <img
-          style={{paddingTop: '1rem', paddingBottom: '0.7rem'}}
+          className='login-notice-pic'
           src={`http://graph.facebook.com/${user.fbId}/picture?type=normal`}
           alt=''
         />
       </span>, 
-      3
+      2
     );
   }
 
-    useEffect( () => {
-      if (!user) return;
-  
-      importUserData();
-      setTimeout(()=> loginNotice(user.fbName), 600);
+  // Import user data upon logging in
+  useEffect( () => {
+    if (!user) return;
 
-    }, [user]);
+    importUserData();
+    setTimeout(()=> loginNotice(user.fbName), 500);
+
+  }, [user]);
     
 
     return (
-      <div className='MainContainer'>   
-      <div className='App'>
+      <div className='main-container'>   
+      <div className='app'>
         <UserInfo setBasicInfo={setBasicInfo} setLife={setLife}/>
         <Calendar life={life} epochs={epochs} setEpochs={setEpochs}/>
         {user? 
