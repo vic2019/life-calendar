@@ -1,3 +1,7 @@
+html {
+  font-size: 1rem;
+}
+
 body {
   box-sizing: border-box;
   margin: 0;
@@ -66,6 +70,7 @@ body {
   flex-flow: column wrap;
   align-items: center;
   text-align: left;
+  margin-left: 10px;
 }
 
 .user-info-row-wrapper {
@@ -81,10 +86,9 @@ body {
 }
 
 #explanation {
-  font-size: 0.82rem;
+  font-size: 0.85em;
   color: #0066ff;
-  font-weight: normal;
-  padding-left: 0.6rem;
+  padding-left: 0.6em;
 }
 
 #explanation:hover {
@@ -107,12 +111,12 @@ body {
   justify-content: flex-start;
   align-items: baseline;
   overflow: wrap;
-  line-height: 0.9;
 }
 
 .tile {
   /* transition: transform 0.12s; */
-  font-size: 1.1rem;
+  font-size: 1rem;
+  line-height: 0.9;
   margin-left: 1px;
 }
 
@@ -132,7 +136,7 @@ body {
   transition-delay: 0.4s;
   background-color: #383838;
   min-width: 6rem;
-  padding: 7px;
+  padding: 6px;
   border-radius: 3px;
   position: absolute;
   bottom: 115%;

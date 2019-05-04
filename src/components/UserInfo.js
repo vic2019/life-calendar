@@ -7,7 +7,7 @@ const { Option } = Select;
 
 // Inline style is needed for this antd component
 const inputStyle = {
-  width: '15rem',
+  width: '240px',
 }
 
 const buttonStyle = {
@@ -46,6 +46,7 @@ class BasicInfo extends React.PureComponent {
     if (window.localStorage.getItem('loggedIn')) return;
 
     notification.open({
+      duration: 4,
       message: 'Log in before editing to save your changes.'
     });
   }
@@ -76,7 +77,7 @@ class BasicInfo extends React.PureComponent {
           <h3 id='subtitle'>
             Each tile represents two weeks of your life
             <span id='explanation' onClick={this.explanation}>
-              But why?
+              (Why?)
             </span>
           </h3>
         <Form id='user-info-form' layout='inline'>  
