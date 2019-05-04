@@ -96,6 +96,7 @@ function Index() {
     }).then(() => {
       setTimeout(() => loginNotice(user.fbName), 500);
     }).catch( err => {
+      message.error('An error occurred while loading your data.', 2)
       // console.log(err);
     });
   }
@@ -110,11 +111,14 @@ function Index() {
   };
   
   const deleteUser = () => {
-    user.deleteUser().catch(err => {
-      message.error('An error occurred. Your account was not deleted.', 2)
+    user.deleteUser().then(() => {
+      logout();
+    }).catch(err => {
+      message.error(
+        'An error occurred. Your account could not be deleted at this moment.', 3
+      )
       // console.log(err);
     })
-    logout();
   }
   
   const save = () => {
