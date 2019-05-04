@@ -4,7 +4,7 @@ import { Button, Icon } from 'antd';
 export default function LoginButton({ handleClick }) {
   return (
     <Button 
-      className='login-button'  
+      id='login-button'  
       size='small' 
       type='primary'
       onClick={handleClick}

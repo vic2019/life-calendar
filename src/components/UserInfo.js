@@ -5,6 +5,15 @@ import dayjs from 'dayjs';
 
 const { Option } = Select;
 
+// Inline style is needed for this antd component
+const inputStyle = {
+  width: '15rem',
+}
+
+const buttonStyle = {
+  marginTop: '20px'
+}
+
 
 class BasicInfo extends React.PureComponent {
   constructor(props) {
@@ -28,7 +37,7 @@ class BasicInfo extends React.PureComponent {
       const lifespan = parseInt(values.lifespan);
       this.setLife({
         DOB: dayjs(values.DOB.format()),
-        lifespan: lifespan < 101 ? lifespan: 100,
+        lifespan: lifespan < 100 ? lifespan: 99,
       });
     });
   }
@@ -60,19 +69,17 @@ class BasicInfo extends React.PureComponent {
     const { getFieldDecorator } = this.props.form;
 
     return (
-        <div className='user-info'>
-          <h1 className='title'>
+        <div id='user-info'>
+          <h1 id='page-title'>
             Life Calendar:
           </h1>
-          <h3 className='subtitle' style={{
-            textAlign: 'center', 
-            color: '#555555', 
-            padding: '0 0 12px 0'
-          }}>
+          <h3 id='subtitle'>
             Each tile represents two weeks of your life
-            <span style={{fontSize: '0.85em', color: '#0066FF', fontWeight: 'normal', paddingLeft: '1em'}} onClick={this.explanation}>But why?</span>
-          </h3> 
-        <Form className='user-info-form' layout='inline'>  
+            <span id='explanation' onClick={this.explanation}>
+              But why?
+            </span>
+          </h3>
+        <Form id='user-info-form' layout='inline'>  
           <div className='user-info-row-wrapper'>
             <Form.Item>
               {getFieldDecorator('name', {
@@ -151,12 +158,3 @@ class BasicInfo extends React.PureComponent {
 }
 
 export default Form.create()(BasicInfo);
-
-
-const inputStyle = {
-  width: '17em',
-}
-
-const buttonStyle = {
-  marginTop: '20px'
-}

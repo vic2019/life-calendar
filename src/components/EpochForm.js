@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Form, Input, Button } from 'antd';
-import { MyTag } from './MyComponents';
+import MyTag from './MyTag';
 import uuidv4 from 'uuid/v4';
 
 
@@ -12,6 +12,8 @@ const sky = '#aed6f1';
 const lime = '#7dcea0';
 const gold = '#f1c40f';
 const orange = '#f5b041';
+// const yellow = '#fff59d';
+// const defaultColor = '#999999';
 
 
 class EpochForm extends React.Component {
@@ -42,7 +44,7 @@ class EpochForm extends React.Component {
         onCancel={onCancel}
         onOk={onCreate}
       >
-      <Form className='epoch-info' layout='vertical' hideRequiredMark={true}>
+      <Form id='epoch-info' layout='vertical' hideRequiredMark={true}>
         <Form.Item>
         {getFieldDecorator('title', {
                 rules: [{
@@ -122,7 +124,7 @@ class EpochForm extends React.Component {
           >
             orange
           </MyTag>
-          {/* This invisible input elem is for antd's form validadtor */}
+          {/* This invisible input elem is here for the validadtor */}
           {getFieldDecorator('color', {
             rules: [{
               required: true, 

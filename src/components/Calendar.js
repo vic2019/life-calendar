@@ -6,21 +6,20 @@ import uuidv4 from 'uuid/v4';
 
 const WrappedTile = React.memo(Tile);
 
-
 export default function Calendar({ life, epochs, setEpochs }) {
+  // Only re-render when user changes input for DOB or expected lifespan
   const prevLife = useRef(life);
   const selectedEpoch = useRef(undefined);
   const selectedPeriod = useRef(undefined);
 
-  // const [epochs, setEpochs] = useState(setInitialEpochs(life));
   const [tiles, setTiles] = useState(
     Array(life.lifespan * 26).fill().map( (_, index) => {
       return life.DOB.startOf('week').add(index * 2, 'week')
     })
   );
   const [modal, setModal] = useState(false);
-    
   
+  // Launch input fields when user selects a tile
   function handleMouseUp() {
     const selection = window.getSelection();
     if (!selection || !selection.anchorNode.parentNode.id) return;
@@ -40,7 +39,6 @@ export default function Calendar({ life, epochs, setEpochs }) {
     setModal(true);
   }
   
-
   function processTile(item) {
     const id = item.format('YYYY-MM-DD');
     const age = 'Age ' + Math.floor(item.diff(life.DOB, 'year'));
@@ -61,10 +59,10 @@ export default function Calendar({ life, epochs, setEpochs }) {
     );
   }
 
-
+  // Only reset epochs if user changes DOB
   useEffect( () => {
     if (!prevLife.current.DOB.isSame(life.DOB)) {
-      setEpochs(setInitialEpochs(life));
+      setEpochs(initialEpochs(life));
       setTiles(Array(life.lifespan * 26).fill().map( (_, index) => {
         return life.DOB.startOf('week').add(index * 2, 'week');
       }));
@@ -90,8 +88,8 @@ export default function Calendar({ life, epochs, setEpochs }) {
         selectedEpoch={selectedEpoch}
         selectedPeriod={selectedPeriod}
         />
-      <div className='calendar-background'>
-        <div className='tile-container' onMouseUp={handleMouseUp}>
+      <div id='calendar-background'>
+        <div id='tile-container' onMouseUp={handleMouseUp}>
           {tiles.length === 1 ? null: tiles.map(processTile)}
         </div>
       </div>
@@ -114,7 +112,7 @@ function Tile({ id, color, age, title }) {
 }
 
 
-function setInitialEpochs(life) {
+function initialEpochs(life) {
   const birthWeek = life.DOB.startOf('week');
   const fallAt7Years = birthWeek.startOf('year').add(7*52 + 34, 'week');
   const springAt12Years = birthWeek.startOf('year').add(12*52 + 26, 'week');

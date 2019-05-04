@@ -5,6 +5,7 @@ import { AUTH_DATA, DB_URI, SORT_KEY } from '../config/config';
 
 export const auth = new CognitoAuth(AUTH_DATA);
 
+// Return User obj to communicate with backend
 export const User = (hash) => {
   const idToken = parseHashParams(hash, 'id_token');
   if (!idToken) return undefined;
@@ -51,7 +52,7 @@ export const User = (hash) => {
   };
 };
 
-export const parseHashParams = (hash, paramType) => {
+const parseHashParams = (hash, paramType) => {
   const reg = new RegExp(`${paramType}=[\\w.-]*&?`);
   const match = hash.match(reg);
   let token = match? match[0]: undefined;
