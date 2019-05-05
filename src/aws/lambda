@@ -1,0 +1,46 @@
+// The AWS Lambda function for this project is included here for completeness.
+
+const AWS = require('aws-sdk');
+const dynamo = new AWS.DynamoDB.DocumentClient();
+const tableName = process.env.TABLE_NAME;
+const sortKey = process.env.SORT_KEY;
+
+
+exports.handler = (e, context, callback) => {
+    const done = (err, res) => {
+        callback(null, {
+            statusCode: err ? '400' : '200',
+            body: err ? err.message : JSON.stringify(res),
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': 'https://lifecalender.me'
+            },
+        });
+        
+        if(err) console.log(`ERROR: ${err.message}`);
+    };
+
+    switch (e.httpMethod) {
+        case 'DELETE':
+            dynamo.delete({
+                TableName: tableName,
+                Key: { [sortKey]: e.queryStringParameters[sortKey] }
+            }, done);
+            break;
+        case 'GET':
+            dynamo.get({
+                TableName: tableName,
+                Key: { [sortKey]: e.queryStringParameters[sortKey] }
+            }, done);
+            break;
+        case 'PUT':
+            const payload = JSON.parse(e.body);
+            dynamo.put({
+                TableName: tableName,
+                Item: JSON.parse(e.body)
+            }, done);
+            break;
+        default:
+            done(new Error(`Unsupported method "${e.httpMethod}"`));
+    }
+};
