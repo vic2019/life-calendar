@@ -1,7 +1,9 @@
 # Life Calendar
 
 
-This project is built with React and runs on AWS. It's live at [lifecalender.me](https://lifecalender.me). Check it out!
+This project is built with React and runs on AWS. 
+
+It's live at [lifecalender.me](https://lifecalender.me). Check it out!
 
 To enable user authentication and database operations, uncomment the "load" and "storage" event listeners and the "LoginButton" component in `index.js`. Then, save your AWS configuration in `config.js`.
 
