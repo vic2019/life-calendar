@@ -23,6 +23,7 @@ export const User = (hash) => {
   };
 
   const save = (params) => {
+    params[SORT_KEY] = id;
     return axios.put(
       DB_URI, 
       params,

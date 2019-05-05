@@ -100,7 +100,8 @@ body {
 }
 
 #tile-container {
-  padding: 40px 20px 50px 22px;
+  padding: 40px 21px 50px 21px;
+  margin-left: 5px;
   background-color: rgba(0,0,0,0);
   display: flex;
   flex-flow: row wrap;
@@ -109,6 +110,11 @@ body {
   overflow: wrap;
   line-height: 0.94;
   font-size: 1rem;
+}
+
+#login-notice-pic {
+  padding-top: 1rem;
+  padding-bottom: 0.7rem;
 }
 
 .tile {
@@ -149,20 +155,16 @@ body {
   visibility: visible
 }
 
-#login-notice-pic {
-  padding-top: 1rem;
-  padding-bottom: 0.7rem;
-}
 
 @media only screen and (max-width: 768px) {
   #tile-container {
-    padding: 40px 20px 50px 24px;
+    padding: 40px 22px 50px 22px;
   }
 }
 
 @media only screen and (max-width: 425px) {
   #tile-container {
-    padding: 40px 15px 50px 17px;
+    padding: 40px 11px 50px 11px;
   }
   
   #calendar-background {
@@ -174,18 +176,24 @@ body {
   #user-info {
     margin-top: 0px;
   }
+
+  #login-button, #action-buttons {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+  }
 }
 
 @media only screen and (max-width: 375px) {
   #tile-container {
-    padding: 30px 10px 35px 10px;
+    padding: 30px 13px 35px 13px;
     background-size: auto 100vh;
   }
 }
 
 @media only screen and (max-width: 320px) {
   #tile-container {
-    padding: 30px 8px 35px 8px;
+    padding: 30px 12px 35px 12px;
     background-size: auto 100vh;
   }
 }

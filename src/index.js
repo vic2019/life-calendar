@@ -45,9 +45,9 @@ function Index() {
   });
   
   function initUser() {
-    let currentUser;
     const loggedIn = window.localStorage.getItem('loggedIn');
     const hash = window.location.hash;
+    let currentUser;
     if (hash && hash !== '#') {
       window.location = '#';
       currentUser = new User(hash);
@@ -123,7 +123,6 @@ function Index() {
   
   const save = () => {
     user.save({
-      UserID: user.id,
       name: basicInfo.name,
       gender: basicInfo.gender,
       DOB: life.DOB,
