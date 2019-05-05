@@ -12,8 +12,10 @@ import "antd/dist/antd.css";
 import "./index.css";
 
 
-if (window.screen.width < 1000) {
-  message.info("For a better user experience, please visit this site on a computer :)", 7);
+function mobileMessage() {
+  if (window.screen.width < 1000) {
+    message.info("For a better user experience, please visit this site on a computer :)", 7);
+  }
 }
 
 const initialLife = {
@@ -21,10 +23,10 @@ const initialLife = {
   lifespan: 0
 };
 
-// const testLife = {
-  //     DOB: dayjs('1995-04-16'),
-  //     lifespan: 30
-  // };
+// const testInitialLife = {
+//     DOB: dayjs('1995-04-16'),
+//     lifespan: 35
+// };
   
 function Index() {
   const [user, setUser] = useState(undefined);
@@ -36,13 +38,13 @@ function Index() {
 
   // Check if user is logged in on page load. 
   // Sync log-in status of all tabs through local storage
-  window.addEventListener('load', initUser);
-  window.addEventListener('storage', () => {
-    const loggedIn = window.localStorage.getItem('loggedIn');
-    if (!loggedIn && user) {
-      auth.signOut();
-    }
-  });
+  // window.addEventListener('load', initUser);
+  // window.addEventListener('storage', () => {
+  //   const loggedIn = window.localStorage.getItem('loggedIn');
+  //   if (!loggedIn && user) {
+  //     auth.signOut();
+  //   }
+  // });
   
   function initUser() {
     const loggedIn = window.localStorage.getItem('loggedIn');
@@ -52,13 +54,17 @@ function Index() {
       window.location = '#';
       currentUser = new User(hash);
     } else { 
-      if(!loggedIn) return;
+      if(!loggedIn) {
+        mobileMessage();
+        return;
+      }
       auth.getSession();
       return;
     }
     
     if (!currentUser) {
       if (loggedIn) window.localStorage.clear();
+      mobileMessage();
       return;
     }
     
@@ -163,7 +169,7 @@ function Index() {
       <div id='app'>
         <UserInfo setBasicInfo={setBasicInfo} setLife={setLife}/>
         <Calendar life={life} epochs={epochs} setEpochs={setEpochs}/>
-        {user? 
+        {/* {user? 
           <ActionButtons
           save={save}
           logout={logout}
@@ -171,8 +177,8 @@ function Index() {
           user={user}
           /> :
           <LoginButton
-          handleClick={login}
-          />}
+            handleClick={login}
+          />} */}
         <SocialButtons/>
       </div>
     </div>
