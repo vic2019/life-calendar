@@ -1,9 +1,12 @@
 # Life Calendar
 
-
 This project is built with React and deployed on AWS. 
 
-It's live at [lifecalender.me](https://lifecalender.me). Check it out!
+It is live at [lifecalender.me](https://lifecalender.me). Check it out!
+
+<br>
+
+### How to Use
 
 To enable user authentication and database operations, uncomment the `load` and `storage` event listeners and the `<LoginButton/>` component in `index.js`. Then, save your AWS configuration in `config.js`.
 
@@ -11,7 +14,9 @@ To enable user authentication and database operations, uncomment the `load` and 
 
 ### Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). In the project directory, you can run:
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
+
+Some of the scripts that you can run in the project directory:
 
 `npm start`
 
