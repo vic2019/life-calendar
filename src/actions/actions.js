@@ -16,7 +16,7 @@ export const User = (hash) => {
   const provider = payload.identities? 
     payload.identities[0].providerName: undefined;
   const socialId = payload.identities? payload.identities[0].userId: undefined;
-  const socialName = payload.socialname;
+  const socialName = payload.name;
   const email = payload.email;
   const socialToken = payload.profile;
   const credential = { "Authorization": idToken };
