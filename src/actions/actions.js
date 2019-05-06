@@ -13,7 +13,9 @@ export const User = (hash) => {
   const accessToken = parseHashParams(hash, 'access_token');
   const payload = JSON.parse(window.atob(idToken.split('.')[1]));
   const id = payload['cognito:username'];
-  const fbId = payload.identities? payload.identities[0].userId: undefined;
+  const provider = payload.identities? 
+    payload.identities[0].providerName: undefined;
+  const socialId = payload.identities? payload.identities[0].userId: undefined;
   const fbName = payload.name;
   const fbToken = payload.profile;
   const credential = { "Authorization": idToken };
@@ -44,7 +46,8 @@ export const User = (hash) => {
     idToken,
     accessToken,
     id,
-    fbId,
+    provider,
+    socialId,
     fbName,
     fbToken,
     get,

@@ -147,11 +147,14 @@ function Index() {
       <span>
         {`Logged in as ${fbName}`}
         <br/>
-        <img
-          id='login-notice-pic'
-          src={`http://graph.facebook.com/${user.fbId}/picture?type=normal`}
-          alt=''
-          />
+        {(user.provider === 'Facebook')?
+          <img
+            id='login-notice-pic'
+            src={`http://graph.facebook.com/${user.socialId}/picture?type=normal`}
+            alt=''
+          /> :
+          null
+        }
       </span>, 
       2
       );
