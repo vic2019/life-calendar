@@ -16,8 +16,9 @@ export const User = (hash) => {
   const provider = payload.identities? 
     payload.identities[0].providerName: undefined;
   const socialId = payload.identities? payload.identities[0].userId: undefined;
-  const fbName = payload.name;
-  const fbToken = payload.profile;
+  const socialName = payload.socialname;
+  const email = payload.email;
+  const socialToken = payload.profile;
   const credential = { "Authorization": idToken };
 
   const get = () => {
@@ -48,8 +49,9 @@ export const User = (hash) => {
     id,
     provider,
     socialId,
-    fbName,
-    fbToken,
+    socialName,
+    socialToken,
+    email,
     get,
     save,
     deleteUser

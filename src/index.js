@@ -100,7 +100,7 @@ function Index() {
       );
 
     }).then(() => {
-      setTimeout(() => loginNotice(user.fbName), 500);
+      setTimeout(() => loginNotice(user.socialName), 500);
     }).catch( err => {
       message.error('An error occurred while loading your data.', 2)
       // console.log(err);
@@ -142,10 +142,11 @@ function Index() {
     })
   }
   
-  const loginNotice = (fbName) => {
+  const loginNotice = (socialName) => {
     message.success(
       <span>
-        {`Logged in as ${fbName}`}
+        {'Logged in ' + socialName? 
+          `as ${user.socialName}`: `from ${user.email}`}
         <br/>
         {(user.provider === 'Facebook')?
           <img
