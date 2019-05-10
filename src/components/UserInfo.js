@@ -20,6 +20,7 @@ class BasicInfo extends React.PureComponent {
     super(props);
     this.setBasicInfo = props.setBasicInfo;
     this.setLife = props.setLife;
+    this.state = { explanationOpen: false };
   }
 
   handleSubmit = e => {
@@ -43,6 +44,7 @@ class BasicInfo extends React.PureComponent {
   }
 
   reminder = () => {
+    this.setState({ explanationOpen: false });
     if (window.localStorage.getItem('loggedIn')) return;
 
     notification.open({
@@ -52,6 +54,9 @@ class BasicInfo extends React.PureComponent {
   }
 
   explanation = () => {
+    if (this.state.explanationOpen) return;
+
+    this.setState({ explanationOpen: true });
     notification.open({
       duration: 0,
       message: 'What is a Life Calendar?',

@@ -14,7 +14,7 @@ import "./index.css";
 
 function mobileMessage() {
   if (window.screen.width < 1000) {
-    message.info("For a better user experience, please visit this site on a computer :)", 7);
+    message.info("For a better user experience, please visit this site on a computer :)", 6);
   }
 }
 
