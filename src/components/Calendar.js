@@ -26,6 +26,7 @@ export default function Calendar({ life, epochs, setEpochs }) {
     
     let anchor = dayjs(selection.anchorNode.parentNode.id);
     let focus = dayjs(selection.focusNode.parentNode.id);
+    if (anchor === 'Invalid Date' || focus === 'Invalid Date') return;
     if (anchor.isAfter(focus)) [anchor, focus] = [focus, anchor];
     selectedPeriod.current = { start: anchor, end: focus };
     

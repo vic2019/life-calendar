@@ -1,35 +1,11 @@
 # Life Calendar
 
-This project is built with React and deployed on AWS. 
+Life Calendar is a light-hearted app for your amusement and philosophical self-reflection.
 
-It is live at [lifecalender.me](https://lifecalender.me). Check it out!
+It calculates and displays a table of tiles, with each tile representing two weeks of your life. You can record your past or futre life stages by highlighting the tiles, and add notes to the selected period of time. Log in first to save your edits.
 
-<br>
+The motivation behind a life calendar is discussed more in depth in Tim Urban's [article](https://waitbutwhy.com/2014/05/life-weeks.html).
 
-### How to Use
+This project is built with React/Create React App and deployed on AWS.
 
-To enable user authentication and database operations, uncomment the `load` and `storage` event listeners and the `<LoginButton/>` component in `index.js`. Then, save your AWS configuration in `config.js`.
-
-<br>
-
-### Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app). 
-
-Some of the scripts that you can run in the project directory:
-
-`npm start`
-
-Runs the app in the development mode.
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.
-You will also see any lint errors in the console.
-
-`npm run build`
-
-Builds the app for production to the `build` folder.
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
- [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).<br> 
- [React documentation](https://reactjs.org/).
+It's live at [lifecalender.me](https://lifecalender.me). Check it out!

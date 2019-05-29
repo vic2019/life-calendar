@@ -151,7 +151,7 @@ function Index() {
         {(user.provider === 'Facebook')?
           <img
             id='login-notice-pic'
-            src={`http://graph.facebook.com/${user.socialId}/picture?type=normal`}
+            src={`https://graph.facebook.com/${user.socialId}/picture?type=normal`} // Will https work?
             alt=''
           /> :
           null

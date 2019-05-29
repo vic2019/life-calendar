@@ -111,7 +111,7 @@ class BasicInfo extends React.PureComponent {
                 >
                   <Option value='male'>Male</Option>
                   <Option value='female'>Female</Option>
-                  <Option value='other'>Transgender/Non-Binary</Option>
+                  <Option value='nonbinary'>Non-Binary</Option>
                 </Select>
               )}
             </Form.Item>
